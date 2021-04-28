@@ -1,0 +1,138 @@
+.techs {
+    max-width: calc(100% - 140px);
+    padding: 100px 70px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.techs__heading {
+    max-width: 100%;
+    margin: 0;
+    padding-bottom: 23px;
+
+    border-bottom: 1px solid #DADADA;
+
+    font-family: Inter;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 22px;
+    line-height: 27px;
+}
+
+.tech__content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.techs__subheading {
+    margin: 0;
+    padding: 90px 0px 26px; 
+
+    font-family: Inter;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 50px;
+    line-height: 58px;
+}
+
+.techs__paragraph {
+    margin: 0;
+    padding-bottom: 100px;
+
+    font-family: Inter;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 12px;
+    line-height: 18px;
+    text-align: center;
+}
+
+.techs__list {
+    width: 100%;
+    padding: 0;
+    margin: 0;
+
+    display: grid;
+    justify-content: center;
+    grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+    gap: 10px;
+    
+    list-style-type: none;
+}
+
+.techs_item {
+    width: 90px;
+    height: 60px;
+
+    display: grid;
+    place-items: center;
+
+    text-align: center;
+    font-family: Inter;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 17px;
+
+    border-radius: 10px;
+    background-color: #303030;
+}
+
+@media screen and (max-width: 768px) {
+    .techs {
+        max-width: calc(100% - 100px);
+        padding: 90px 50px;
+    }
+    .techs__subheading {
+        padding: 80px 0px 22px; 
+    }
+    .techs__paragraph {
+        padding-bottom: 83px; 
+
+        font-size: 14px;
+        line-height: 20px;
+    }
+    .techs__list {
+        grid-template-columns: repeat(auto-fill, minmax(84px, 1fr));
+    }
+    .techs_item {
+        width: 84px;
+        height: 57px;
+
+        font-size: 12px;
+        line-height: 15px;
+    }
+}
+
+@media screen and (max-width: 580px) {
+    .techs {
+        max-width: calc(100% - 28px);
+        padding: 70px 14px;
+    }
+    .teach__heading {
+        font-size: 18px;
+        line-height: 22px;
+    }
+    .techs__subheading {
+        padding: 60px 0px 24px; 
+
+        font-size: 30px;
+        line-height: 36px;
+    }
+    .techs__paragraph {
+        padding-bottom: 71px; 
+
+        font-size: 11px;
+        line-height: 16px;
+    }
+}
+
+@media screen and (max-width: 320px) {
+    .techs__list {
+        width: 180px;
+    }
+}
