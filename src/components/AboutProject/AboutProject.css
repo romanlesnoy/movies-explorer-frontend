@@ -1,0 +1,135 @@
+.about-project {
+    max-width: calc(100% - 140px);
+    padding: 110px 70px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    background-color: #000;
+}
+
+.about-project__heading {
+    max-width: 100%;
+    margin: 0;
+    padding-bottom: 23px;
+
+    border-bottom: 1px solid #DADADA;
+
+    font-family: Inter;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 22px;
+    line-height: 27px;
+}
+
+.about-project__grid {
+    padding-top: 70px;
+    padding-bottom: 110px;
+
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto;
+    row-gap: 40px;
+}
+
+.about-project__subheading {
+    margin: 0;
+    padding-bottom: 26px;
+
+    font-family: Inter;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 20px;
+    line-height: 24px;
+}
+
+.about-project__paragraph {
+    font-family: Inter;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 20px;
+}
+
+.about-project__progressbar {
+    display: grid;
+    grid-template-columns: 1fr 4fr;
+    grid-template-rows: 36px;
+    row-gap: 14px;
+}
+
+.about-project__text {
+    margin: 0;
+    /* align-self: center;
+    justify-self: center; */
+
+    font-family: Inter;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 17px;
+    text-align: center;
+
+    color: #8B8B8B;
+}
+
+.about-project__green {
+    padding-top: 8px;
+    background-color: #3DDC84;
+    color: #000;
+}
+
+.about-project__grey {
+    padding-top: 8px;
+    background-color: #303030;
+    color: #fff;
+}
+
+@media screen and (max-width: 768px) {
+    .about-project {
+        max-width: calc(100% - 100px);
+        padding: 90px 50px;
+    }
+    .about-project__grid {
+        padding-bottom: 93px;
+        row-gap: 30px;
+    }
+    .about-project__subheading {
+        padding-bottom: 22px;
+    }
+
+}
+
+@media screen and (max-width: 580px) {
+    .about-project {
+        max-width: calc(100% - 36px);
+        padding: 70px 18px;
+    }
+    .about-project__grid {
+        padding-top: 60px;
+        padding-bottom: 60px;
+    }
+    .about-project__heading {
+        font-size: 18px;
+        line-height: 22px;
+    }
+    .about-project__subheading {
+        padding-bottom: 16px;
+    }
+    .about-project__paragraph {
+        font-size: 11px;
+        line-height: 16px;
+    }
+    .about-project__text {
+        font-size: 11px;
+        line-height: 13px;
+    }
+}
+
+@media screen and (max-width: 540px) {
+    .about-project__grid {
+        grid-template-columns: 1fr;
+        column-gap: 56px;
+    }
+}
