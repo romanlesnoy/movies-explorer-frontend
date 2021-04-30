@@ -46,6 +46,10 @@
     line-height: 50px;
 }   
 
+.portfolio__link:hover {
+    opacity: .8;
+}
+
 .portfolio__link-button {
     width: 100%;
     padding: 20px 0;
