@@ -52,7 +52,7 @@
 }
 
 .techs__list {
-    width: 100%;
+    width: 695px;
     padding: 0;
     margin: 0;
 
@@ -97,6 +97,7 @@
         line-height: 20px;
     }
     .techs__list {
+        width: 100%;
         grid-template-columns: repeat(auto-fill, minmax(84px, 1fr));
     }
     .techs_item {
