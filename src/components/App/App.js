@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Route, Switch, Redirect, useHistory } from "react-router-dom";
 import Header from "../Header/Header";
 import Main from "../Main/Main";
+import Movies from "../Movies/Movies";
 import Footer from "../Footer/Footer";
 
 function App() {
@@ -24,9 +25,13 @@ function App() {
                 </Route>
 
                 <Route path="/movies">
-                    <h1>movies</h1>
+                    <Movies/>
                 </Route>
                 
+                <Route path="/savedmovies">
+                    <h1>Saved movies</h1>
+                </Route>
+
                 <Route path="*">
                     <h1> Страница 404</h1>
                 </Route>
