@@ -1,0 +1,82 @@
+.movies-card {
+    background-color: #222222;
+}
+
+.movies-card__container {
+    padding: 14px;
+
+    display: flex;
+    justify-content: space-between;
+}
+
+.movie-card__info {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    row-gap: 9px;
+}
+
+.movies-card__name {
+    margin: 0;
+
+    font-family: Inter;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 15px;
+    line-height: 18px;
+}
+
+.movies-card__duration {
+    margin: 0;
+    
+    font-family: Inter;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 11px;
+    line-height: 13px;
+}
+
+.movies-card__bookmark-button {
+    width: 30px;
+    height: 30px;
+    padding: 0;
+
+    border: none;
+    border-radius: 50px;
+
+    background-color: #313131;
+    background-image: url("../../images/icons/bookmark-icon-non-active.svg");
+    background-repeat: no-repeat;
+    background-position: center;
+
+    cursor: pointer;
+}
+
+.movies-card__bookmark-button:hover {
+    opacity: .8;
+}
+
+.movies-card__bookmark-button_active {
+    background-color: #3DDC84;
+    background-image: url("../../images/icons/bookmark-icon-active.svg");
+}
+
+.movies-card__images {
+    width: 360px;
+    height: 203px;
+    object-fit: contain;
+}
+
+@media screen and (max-width: 892px) {
+    .movies-card__images {
+        width: 339px;
+        height: 190px;
+    }
+}
+
+@media screen and (max-width: 550px) {
+    .movies-card__images {
+        width: 300px;
+        height: 168px;
+    }
+}
