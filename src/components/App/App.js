@@ -3,6 +3,7 @@ import { Route, Switch, Redirect, useHistory } from "react-router-dom";
 import Header from "../Header/Header";
 import Main from "../Main/Main";
 import Movies from "../Movies/Movies";
+import SavedMovies from "../SavedMovies/SavedMovies";
 import Footer from "../Footer/Footer";
 
 function App() {
@@ -29,7 +30,7 @@ function App() {
                 </Route>
                 
                 <Route path="/savedmovies">
-                    <h1>Saved movies</h1>
+                    <SavedMovies/>
                 </Route>
 
                 <Route path="*">
