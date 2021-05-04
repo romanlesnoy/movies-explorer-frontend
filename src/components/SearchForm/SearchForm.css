@@ -7,7 +7,7 @@
     justify-content: space-between;
     gap: 40px;
 
-    border-bottom: 1px solid rgba(170,170,170,0.2);
+    /* border-bottom: 1px solid rgba(170,170,170,0.2); */
 }
 
 .search__form {

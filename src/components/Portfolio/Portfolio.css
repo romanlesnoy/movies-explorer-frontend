@@ -6,7 +6,7 @@
     flex-direction: column;
     justify-content: space-between;
 
-    background-color: #000;
+    background-color: #202020;
 }
 
 .portfolio__heading {
@@ -61,7 +61,7 @@
     border: none;
     border-bottom: 1px solid #424242;
 
-    background-color: #000;
+    background-color: #202020;
     color: #FFF;
 
     cursor: pointer;
