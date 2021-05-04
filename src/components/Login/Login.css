@@ -1,0 +1,136 @@
+.login {
+    margin: 0 auto;
+    padding: 70px 0;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    row-gap: 40px;
+}
+
+.login__home {
+
+}
+
+.login__logo {
+
+}
+
+.login__welcome {
+    margin: 0;
+
+    font-family: Inter;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 29px;
+}
+
+.login__form {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.login__label {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    row-gap: 10px;
+
+    color: #8B8B8B;
+    font-family: Inter;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 10px;
+    line-height: 12px;
+}
+
+.login__input {
+    width: 366px;
+    height: 16px;
+    padding: 15px;
+
+    border: none;
+    background-color: #2F2F2F;
+    border-radius: 8px;
+
+    color: #fff;
+    font-family: Inter;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 13px;
+    line-height: 16px;
+}
+
+.login__input-error {
+    height: 12px;
+}
+
+.login__label:last-of-type {
+    padding-bottom: 69px;
+}
+
+.login__button {
+    width: 396px;
+    height: 45px;
+    align-self: flex-end;
+
+    color: #fff;
+    border: none;
+    background: #4285F4;
+    border-radius: 3px;
+}
+
+.login__paragraph {
+    margin: 0;
+    padding-top: 16px;
+
+    color: #fff;
+    text-align: center;
+
+    font-family: Inter;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 17px;
+}
+
+.login__link {
+    text-decoration: none;
+    color: #4285F4;
+}
+
+@media screen and (max-width: 768px) {
+    .login {
+        padding: 232px 0;
+    }
+    .login__label:last-of-type {
+        padding-bottom: 179px;
+    }
+}
+
+@media screen and (max-width: 456px) {
+    .login {
+        padding: 56px 0 30px;
+    }
+    .login__label:last-of-type {
+        padding-bottom: 267px;
+    }
+    .login__input {
+        width: 230px;
+    }
+    .login__button {
+        width: 260px;
+    }
+    .login__paragraph {
+        margin: 0;
+        padding-top: 15px;
+    }
+    .login__paragraph {
+        padding-top: 14px;
+        font-size: 12px;
+        line-height: 15px;
+    }
+}

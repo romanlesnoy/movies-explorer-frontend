@@ -6,6 +6,7 @@ import Movies from "../Movies/Movies";
 import SavedMovies from "../SavedMovies/SavedMovies";
 import Profile from "../Profile/Profile";
 import Footer from "../Footer/Footer";
+import Login from "../Login/Login";
 
 function App() {
     const [loggedIn, setLoggedIn] = useState(true);
@@ -19,11 +20,11 @@ function App() {
                 </Route>
 
                 <Route path="/sign-up">
-                    <h1>Регистрация</h1>
+                    
                 </Route>
 
                 <Route path="/sign-in">
-                    <h1>Логин</h1>
+                    <Login/>
                 </Route>
 
                 <Route path="*">
