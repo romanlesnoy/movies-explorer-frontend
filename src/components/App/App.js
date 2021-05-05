@@ -13,7 +13,7 @@ function App() {
         <>
             <Switch>
                 <Route exact path="/">
-                    <Main />
+                    <Main loggedIn={false}/>
                 </Route>
 
                 <Route path="/sign-up">
@@ -25,15 +25,15 @@ function App() {
                 </Route>
 
                 <Route path="/profile">
-                    <Profile />
+                    <Profile loggedIn={true}/>
                 </Route>
 
                 <Route path="/movies">
-                    <Movies />
+                    <Movies loggedIn={true}/>
                 </Route>
 
-                <Route path="/savedmovies">
-                    <SavedMovies />
+                <Route path="/saved-movies">
+                    <SavedMovies loggedIn={true}/>
                 </Route>
 
                 <Route path="*">
