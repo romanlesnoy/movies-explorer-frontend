@@ -1,7 +1,16 @@
-import React from "react";
+import React, {useState} from "react";
 import "./MoviesCards.css";
 
 function MoviesCards() {
+    const [isLiked, setIsLiked] = useState(false)
+    const cardLikeButtonClassName = `movies-card__bookmark-button ${
+        isLiked ? "movies-card__bookmark-button_active" : " "
+    }`;
+
+    function handleBookmarkClick () {
+        setIsLiked(!isLiked);
+    }
+
     return (
         <article className="movies-card">
             <div className="movies-card__container">
@@ -10,9 +19,10 @@ function MoviesCards() {
                     <p className="movies-card__duration">1ч 47м</p>
                 </div>
                 <button
-                    className="movies-card__bookmark-button"
+                    className={cardLikeButtonClassName}
                     type="button"
-                    aria-label="Bookmark Buttom"
+                    aria-label="Bookmark Button"
+                    onClick={handleBookmarkClick}
                 ></button>
             </div>
             <img

@@ -101,6 +101,10 @@
     line-height: 17px;
 }
 
+.about-me__link:hover {
+    opacity: 0.8;
+}
+
 @media screen and (max-width: 768px) {
     .about-me {
         max-width: calc(100% - 100px);

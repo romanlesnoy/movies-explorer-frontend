@@ -53,7 +53,7 @@ function Register() {
                 </button>
                 <p className="register__paragraph">
                     Уже зарегистрированы?{" "}
-                    <Link className="register__link" to="/sign-up">
+                    <Link className="register__link" to="/sign-in">
                         Войти
                     </Link>
                 </p>
