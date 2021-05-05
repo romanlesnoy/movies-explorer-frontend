@@ -8,6 +8,7 @@ import Profile from "../Profile/Profile";
 import Footer from "../Footer/Footer";
 import Login from "../Login/Login";
 import Register from "../Register/Register";
+import NotFound from "../NotFound/NotFound";
 
 function App() {
     const [loggedIn, setLoggedIn] = useState(true);
@@ -28,7 +29,7 @@ function App() {
                     <Login/>
                 </Route>
 
-                <Route path="*">
+                <Route path="/profile">
                     <Profile/>
                 </Route>
 
@@ -41,7 +42,7 @@ function App() {
                 </Route>
 
                 <Route path="*">
-                    <h1> Страница 404</h1>
+                    <NotFound/>
                 </Route>
             </Switch>
 
