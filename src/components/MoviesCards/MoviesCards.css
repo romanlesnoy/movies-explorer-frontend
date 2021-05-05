@@ -61,6 +61,11 @@
     background-image: url("../../images/icons/bookmark-icon-active.svg");
 }
 
+.movies-card__bookmark-button_active:hover  {
+    background-color: #313131;
+    background-image: url("../../images/icons/bookmark-cross-icon.svg");
+}
+
 .movies-card__images {
     width: 360px;
     height: 203px;

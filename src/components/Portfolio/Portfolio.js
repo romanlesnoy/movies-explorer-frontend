@@ -7,7 +7,7 @@ function Portfolio() {
             <h2 className="portfolio__heading">Портфолио</h2>
             <ul className="portfolio__links-list">
                 <li className="portfolio_list-item">
-                    <a className="portfolio__link" href="#" aria-label="Ссылка на Статичный сайт">
+                    <a className="portfolio__link" href="https://romanlesnoy.github.io/how-to-learn/" target="_blank" rel="noopener noreferrer">
                         <button
                             className="portfolio__link-button"
                             type="button"
@@ -32,7 +32,7 @@ function Portfolio() {
                     </a>
                 </li>
                 <li className="portfolio_list-item">
-                    <a className="portfolio__link" href="#" aria-label="Ссылка на Адаптивный сайт">
+                    <a className="portfolio__link" href="https://romanlesnoy.github.io/russian-travel/" target="_blank" rel="noopener noreferrer">
                         <button
                             className="portfolio__link-button"
                             type="button"
@@ -57,7 +57,7 @@ function Portfolio() {
                     </a>
                 </li>
                 <li className="portfolio_list-item">
-                    <a className="portfolio__link" href="#" aria-label="Ссылка на Одностраничное приложение">
+                    <a className="portfolio__link" href="https://romanlesnoy.github.io/mesto/" target="_blank" rel="noopener noreferrer">
                         <button
                             className="portfolio__link-button"
                             type="button"
