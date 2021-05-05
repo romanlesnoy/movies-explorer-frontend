@@ -7,6 +7,7 @@ import SavedMovies from "../SavedMovies/SavedMovies";
 import Profile from "../Profile/Profile";
 import Footer from "../Footer/Footer";
 import Login from "../Login/Login";
+import Register from "../Register/Register";
 
 function App() {
     const [loggedIn, setLoggedIn] = useState(true);
@@ -20,7 +21,7 @@ function App() {
                 </Route>
 
                 <Route path="/sign-up">
-                    
+                    <Register/>
                 </Route>
 
                 <Route path="/sign-in">

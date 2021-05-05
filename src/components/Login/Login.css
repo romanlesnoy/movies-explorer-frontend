@@ -69,7 +69,7 @@
 }
 
 .login__label:last-of-type {
-    padding-bottom: 69px;
+    padding-bottom: 159px;
 }
 
 .login__button {
@@ -116,7 +116,7 @@
         padding: 56px 0 30px;
     }
     .login__label:last-of-type {
-        padding-bottom: 267px;
+        padding-bottom: 247px;
     }
     .login__input {
         width: 230px;
