@@ -41,8 +41,8 @@ function Login() {
                 </button>
                 <p className="login__paragraph">
                     Ещё не зарегистрированы?{" "}
-                    <Link className="login__link" to="/sign-in">
-                        Войти
+                    <Link className="login__link" to="/sign-up">
+                        Регистрация
                     </Link>
                 </p>
             </form>
