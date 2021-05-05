@@ -3,10 +3,10 @@ import Header from "../Header/Header";
 import "./Profile.css";
 import { Link } from "react-router-dom";
 
-function Profile() {
+function Profile({loggedIn}) {
     return (
         <>
-            <Header />
+            <Header loggedIn={loggedIn}/>
             <section className="profile">
                 <h2 className="profile__welcome">Привет, Виталий!</h2>
                 <form className="profile__edit-form">
