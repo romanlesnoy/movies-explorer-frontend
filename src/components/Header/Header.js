@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { useMediaQuery } from "react-responsive";
 import logo from "../../images/icons/logo.svg";
 import "./Header.css";
@@ -28,29 +28,35 @@ function Header({ loggedIn }) {
             </Link>
             {loggedIn ? (
                 <>
-                    {!isMobile && (//разметка loggedin && desktop resolution
+                    {!isMobile && ( //разметка loggedin && desktop resolution
                         <ul className="header_links">
                             <li className="header__link-item">
-                                <Link to="/movies" className="header__link">
+                                <NavLink
+                                    to="/movies"
+                                    className="header__link"
+                                    activeClassName="header__link_active"
+                                >
                                     Фильмы
-                                </Link>
+                                </NavLink>
                             </li>
-                            <li className="header__link-item">
-                                <Link
+                            <li className="header__link-item ">
+                                <NavLink
                                     to="/saved-movies"
                                     className="header__link"
+                                    activeClassName="header__link_active"
                                 >
                                     Сохранённые фильмы
-                                </Link>
+                                </NavLink>
                             </li>
                             <li className="header__link-item header__link-item">
-                                <Link
+                                <NavLink
                                     to="/profile"
                                     className="header__link header__profile-link"
+                                    activeClassName="header__link_active"
                                 >
                                     Аккаунт
                                     <button className="header__profile-button" />
-                                </Link>
+                                </NavLink>
                             </li>
                         </ul>
                     )}
@@ -69,7 +75,8 @@ function Header({ loggedIn }) {
                         </>
                     )}
                 </>
-            ) : ( //разметка loggedOut
+            ) : (
+                //разметка loggedOut
                 <ul className="header_links">
                     <li className="header__link-item">
                         <Link to="sign-up" className="header__link">
