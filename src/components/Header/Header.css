@@ -91,6 +91,10 @@
     cursor: pointer;
 }
 
+.header__link_active {
+    font-weight: 600;
+}
+
 .header__link:hover {
     opacity: .8;
 }
