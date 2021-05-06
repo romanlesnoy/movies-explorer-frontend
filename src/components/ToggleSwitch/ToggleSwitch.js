@@ -4,7 +4,7 @@ import "./ToggleSwitch.css";
 function ToggleSwitch() {
     return (
         <div class="toggle-switch">
-            <label class="toggle-switch__label" for="toggleSwitch">
+            <label class="toggle-switch__label">
                 Короткометражки
             </label>
             <input
