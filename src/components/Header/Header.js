@@ -29,7 +29,7 @@ function Header({ loggedIn }) {
             {loggedIn ? (
                 <>
                     {!isMobile && ( //разметка loggedin && desktop resolution
-                        <ul className="header_links">
+                        <ul className="header__links">
                             <li className="header__link-item">
                                 <NavLink
                                     to="/movies"
@@ -77,7 +77,7 @@ function Header({ loggedIn }) {
                 </>
             ) : (
                 //разметка loggedOut
-                <ul className="header_links">
+                <ul className="header__links">
                     <li className="header__link-item">
                         <Link to="sign-up" className="header__link">
                             Регистрация

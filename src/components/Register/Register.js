@@ -7,7 +7,11 @@ function Register() {
     return (
         <section className="register">
             <Link to="/" className="register__home">
-                <img className="register__logo" src={logo} alt="Логотип проект" />
+                <img
+                    className="register__logo"
+                    src={logo}
+                    alt="Логотип проект"
+                />
             </Link>
             <h2 className="register__welcome">Добро пожаловать!</h2>
             <form className="register__form">
@@ -49,7 +53,7 @@ function Register() {
                     <span className="register__input-error"></span>
                 </label>
                 <button type="submit" className="register__button">
-                    Войти
+                    Зарегистрироваться
                 </button>
                 <p className="register__paragraph">
                     Уже зарегистрированы?{" "}

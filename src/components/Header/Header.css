@@ -33,7 +33,7 @@
     opacity: 0.8;
 }
 
-.header_links {
+.header__links {
     display: flex;
     align-items: center;
     
