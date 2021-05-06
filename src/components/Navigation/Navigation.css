@@ -1,0 +1,127 @@
+.navigation__popup {
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+
+    background-color: rgba(0, 0, 0, 0.5);
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s, opacity 0.5s linear;
+}
+
+.navigation__popup_opened {
+    visibility: visible;
+    opacity: 1;
+}
+
+.navigation__menu {
+    position: absolute;
+    right: 0;
+    width: calc(520px - 180px);
+    height: calc(100% - 249px);
+    padding: 159px 90px 90px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+
+    background-color: #202020;
+}
+
+.navigation__close-button {
+    position: absolute;
+    width: 22px;
+    height: 22px;
+
+    z-index: 2;
+    top: 22px;
+    right: 22px;
+
+    border: none;
+    background: transparent url("../../images/icons/close-button-icon.svg")
+        no-repeat center center;
+
+    cursor: pointer;
+}
+
+.navigation__close-button:hover {
+    opacity: 0.8;
+}
+
+.navigation__links {
+    margin: 0;
+    padding: 0;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    list-style-type: none;
+}
+
+.navigation__link-item {
+    padding-bottom: 15px;
+}
+
+.navigation__link-item:first-of-type {
+    padding-bottom: 23px;
+}
+
+.navigation__link-item:last-of-type {
+    padding-top: 539px;
+    padding-bottom: 0;
+}
+
+.navigation__link {
+    padding-bottom: 5px;
+    text-decoration: none;
+    color: inherit;
+    text-align: center;
+
+    font-family: Inter;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 22px;
+}
+
+.navigation__link_active {
+    border-bottom: 2px solid #FFF;
+}
+
+.navigation__link:hover {
+    opacity: 0.8;
+}
+
+.navigation__profile-link {
+    display: flex;
+    column-gap: 13px;
+    align-items: center;
+}
+
+.navigation__profile-button {
+    width: 30px;
+    height: 30px;
+
+    border: none;
+    border-radius: 6px;
+    background: #313131 url("../../images/icons/profile-icon.svg") no-repeat
+        center center;
+
+    cursor: pointer;
+}
+
+@media screen and (max-width: 520px) {
+    .navigation__menu {
+        width: calc(100% - 20px);
+        height: calc(100% - 144px - 48px);
+        padding: 144px 10px 48px;
+    }
+}
