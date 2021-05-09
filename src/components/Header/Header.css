@@ -1,0 +1,124 @@
+.header {
+    max-width: calc(100% - 140px);
+    height: 74px;
+    padding: 0 70px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    background-color: #073042;
+}
+
+.header_logged-in {
+    background-color: transparent;
+}
+
+.header__logo {
+    width: 38px;
+    height: 38px;
+}
+
+.header__burger-button {
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border: none;
+    background: transparent url('../../images/icons/burger-button-icon.svg') no-repeat center center;
+
+    cursor: pointer;
+}
+
+.header__burger-button:hover {
+    opacity: 0.8;
+}
+
+.header__links {
+    display: flex;
+    align-items: center;
+    
+    padding: 0;
+    list-style-type: none;
+}
+
+.header__link-item {
+    margin-right: 30px;
+}
+
+.header__link-item:last-of-type {
+    margin-right: 0;
+}
+
+.header__profile-link {
+    display: flex;
+    column-gap: 13px;
+    align-items: center;
+}
+
+.header__profile-button {
+    width: 30px;
+    height: 30px;
+
+    border: none;
+    border-radius: 6px;
+    background: #313131 url('../../images/icons/profile-icon.svg') no-repeat center center;
+
+    cursor: pointer;
+}
+
+.header__button {
+    width: 76px;
+    height: 32px;
+
+    background-color: #3DDC84;
+    border: none;
+    border-radius: 3px;
+    padding: 0;
+
+    cursor: pointer;
+}
+
+.header__link {
+    text-decoration: none;
+    color: inherit;
+
+    font-family: Inter;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 16px;
+    
+    cursor: pointer;
+}
+
+.header__link_active {
+    font-weight: 600;
+}
+
+.header__link:hover {
+    opacity: .8;
+}
+
+@media screen and (max-width: 768px) {
+    .header {
+        max-width: calc(100% - 60px);
+        padding: 0 30px;
+    }
+}
+
+@media screen and (max-width: 320px) {
+    .header {
+        max-width: calc(100% - 28px);
+        padding: 0 14px;
+    }
+    .header__button {
+        width: 54px;
+        height: 26px;
+    }
+    .header__link-item {
+        margin-right: 14px;
+    }
+    .header__link {
+        font-size: 10px;
+    }
+}
