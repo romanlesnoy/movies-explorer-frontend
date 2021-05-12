@@ -1,10 +1,9 @@
 import React from "react";
 import Header from "../Header/Header";
 import "./Profile.css";
-import { Link } from "react-router-dom";
 import useFormValidation from "../../hooks/useFormValidation";
 
-function Profile({ loggedIn }) {
+function Profile({ loggedIn, onLogOut }) {
     const { values, errors, isValid, handleChange, resetForm } =
         useFormValidation({ email: "test@test.ru", name: "test" });
 
@@ -67,12 +66,11 @@ function Profile({ loggedIn }) {
                     </button>
                     <button
                         type="button"
-                        className="profile__button"
+                        className="profile__button profile__button_logout"
                         role="link"
+                        onClick={onLogOut}
                     >
-                        <Link className="profile__button-link" to="/sign-in">
-                            Выйти из аккаунта
-                        </Link>
+                        Выйти из аккаунта
                     </button>
                 </div>
             </section>

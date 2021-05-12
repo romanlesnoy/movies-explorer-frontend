@@ -4,13 +4,14 @@ import { Link } from "react-router-dom";
 import logo from "../../images/icons/logo.svg";
 import useFormValidation from "../../hooks/useFormValidation";
 
-function Register() {
+function Register({ onRegister }) {
     const { values, errors, isValid, handleChange, resetForm } =
         useFormValidation({});
 
     function handleOnSubmit(evt) {
         evt.preventDefault();
         console.log(values);
+        onRegister(values);
         resetForm();
     }
 
@@ -28,35 +29,43 @@ function Register() {
                 <label className="register__label">
                     Имя
                     <input
-                        className={`register__input ${errors.name && "register__input_invalid"}`}
+                        className={`register__input ${
+                            errors.name && "register__input_invalid"
+                        }`}
                         name="name"
                         type="text"
                         placeholder="Имя"
                         required
                         autoComplete="off"
                         onChange={handleChange}
-                        value={values.name || ''}
+                        value={values.name || ""}
                     />
                     <span className="register__input-error">{errors.name}</span>
                 </label>
                 <label className="register__label">
                     E-mail
                     <input
-                        className={`register__input ${errors.email && "register__input_invalid"}`}
+                        className={`register__input ${
+                            errors.email && "register__input_invalid"
+                        }`}
                         name="email"
                         type="email"
                         placeholder="Email"
                         required
                         autoComplete="off"
                         onChange={handleChange}
-                        value={values.email || ''}
+                        value={values.email || ""}
                     />
-                    <span className="register__input-error">{errors.email}</span>
+                    <span className="register__input-error">
+                        {errors.email}
+                    </span>
                 </label>
                 <label className="register__label">
                     Пароль
                     <input
-                        className={`register__input ${errors.password && "register__input_invalid"}`}
+                        className={`register__input ${
+                            errors.password && "register__input_invalid"
+                        }`}
                         name="password"
                         type="password"
                         minLength="8"
@@ -64,13 +73,17 @@ function Register() {
                         required
                         autoComplete="off"
                         onChange={handleChange}
-                        value={values.password || ''}
+                        value={values.password || ""}
                     />
-                    <span className="register__input-error">{errors.password}</span>
+                    <span className="register__input-error">
+                        {errors.password}
+                    </span>
                 </label>
                 <button
                     type="submit"
-                    className={`register__submit-button ${!isValid && "register__submit-button_disable"}`}
+                    className={`register__submit-button ${
+                        !isValid && "register__submit-button_disable"
+                    }`}
                     disabled={!isValid}
                 >
                     Зарегистрироваться

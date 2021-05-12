@@ -4,13 +4,13 @@ import { Link } from "react-router-dom";
 import logo from "../../images/icons/logo.svg";
 import useFormValidation from "../../hooks/useFormValidation";
 
-function Login() {
+function Login({onLogin}) {
     const { values, errors, isValid, handleChange, resetForm } =
         useFormValidation({});
 
     function handleOnSubmit(evt) {
         evt.preventDefault();
-        console.log(values);
+        onLogin(values.email, values.password)
         resetForm();
     }
 

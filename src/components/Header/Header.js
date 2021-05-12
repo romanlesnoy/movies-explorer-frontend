@@ -1,14 +1,12 @@
 import React, { useState } from "react";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useLocation } from "react-router-dom";
 import { useMediaQuery } from "react-responsive";
 import logo from "../../images/icons/logo.svg";
 import "./Header.css";
 import Navigation from "../Navigation/Navigation";
 
 function Header({ loggedIn }) {
-    const headerBackgroundColoreStyle = loggedIn
-        ? "header header_logged-in"
-        : "header";
+    let location = useLocation();
 
     const [isNavPopupIsOpen, setIsNavPopupOpen] = useState(false);
 
@@ -22,7 +20,7 @@ function Header({ loggedIn }) {
         setIsNavPopupOpen(false);
     }
     return (
-        <header className={headerBackgroundColoreStyle}>
+        <header className={`${location.pathname === '/' ? "header" : "header header_logged-in"}`}>
             <Link to="/" className="header__link">
                 <img className="header__logo" src={logo} alt="Логотип проект" />
             </Link>

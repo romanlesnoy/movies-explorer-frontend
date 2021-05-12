@@ -120,9 +120,7 @@
     color: #2F2F2F;
 }
 
-
-.profile__button-link {
-    text-decoration: none;
+.profile__button_logout {
     color: #ee3465;
 }
 
