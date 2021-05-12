@@ -14,8 +14,6 @@ function Register() {
         resetForm();
     }
 
-    console.log(errors.email);
-
     return (
         <section className="register">
             <Link to="/" className="register__home">
