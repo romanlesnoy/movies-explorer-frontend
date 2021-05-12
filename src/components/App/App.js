@@ -1,5 +1,7 @@
-import React,  { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Route, Switch } from "react-router-dom";
+import { CurrentUserContext } from "../../context/currentUserContext";
+import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
 import Main from "../Main/Main";
 import Movies from "../Movies/Movies";
 import SavedMovies from "../SavedMovies/SavedMovies";
@@ -7,7 +9,6 @@ import Profile from "../Profile/Profile";
 import Login from "../Login/Login";
 import Register from "../Register/Register";
 import NotFound from "../NotFound/NotFound";
-import { CurrentUserContext } from "../../context/currentUserContext";
 
 function App() {
     const [currentUser, setCurrentUser] = useState({});
@@ -28,17 +29,38 @@ function App() {
                         <Login />
                     </Route>
 
-                    <Route path="/profile">
+                    <ProtectedRoute
+                        exact
+                        path="/profile"
+                        loggedIn={true}
+                        component={Profile}
+                    />
+
+                    <ProtectedRoute
+                        exact
+                        path="/movies"
+                        loggedIn={true}
+                        component={Movies}
+                    />
+
+                    <ProtectedRoute
+                        exact
+                        path="/saved-movies"
+                        loggedIn={true}
+                        component={SavedMovies}
+                    />
+
+                    {/* <Route path="/profile">
                         <Profile loggedIn={true} />
-                    </Route>
+                    </Route> */}
 
-                    <Route path="/movies">
+                    {/* <Route path="/movies">
                         <Movies loggedIn={true} />
-                    </Route>
+                    </Route> */}
 
-                    <Route path="/saved-movies">
+                    {/* <Route path="/saved-movies">
                         <SavedMovies loggedIn={true} />
-                    </Route>
+                    </Route> */}
 
                     <Route path="*">
                         <NotFound />
