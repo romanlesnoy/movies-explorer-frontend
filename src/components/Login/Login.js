@@ -4,13 +4,13 @@ import { Link } from "react-router-dom";
 import logo from "../../images/icons/logo.svg";
 import useFormValidation from "../../hooks/useFormValidation";
 
-function Login({onLogin}) {
+function Login({ onLogin, apiError }) {
     const { values, errors, isValid, handleChange, resetForm } =
         useFormValidation({});
 
     function handleOnSubmit(evt) {
         evt.preventDefault();
-        onLogin(values.email, values.password)
+        onLogin(values.email, values.password);
         resetForm();
     }
 
@@ -56,9 +56,12 @@ function Login({onLogin}) {
                         {errors.password}
                     </span>
                 </label>
+                <span className="login__input-error">{apiError}</span>
                 <button
                     type="submit"
-                    className={`login__submit-button ${!isValid && "login__submit-button_disable"}`}
+                    className={`login__submit-button ${
+                        !isValid && "login__submit-button_disable"
+                    }`}
                     disabled={!isValid}
                 >
                     Войти

@@ -1,7 +1,6 @@
 export const BASE_URL = "http://localhost:3001";
 
 const response = (res) => {
-    console.log(res)
     if (res.ok) {
         return res.json();
     }
@@ -9,7 +8,6 @@ const response = (res) => {
 }
 
 export const register = (name, email, password) => {
-    console.log(name, email, password);
     return fetch(`${BASE_URL}/signup`, {
         method: "POST",
         headers: {

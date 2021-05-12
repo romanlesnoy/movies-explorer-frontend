@@ -3,13 +3,13 @@ import "./ToggleSwitch.css";
 
 function ToggleSwitch() {
     return (
-        <div class="toggle-switch">
-            <label class="toggle-switch__label">
+        <div className="toggle-switch">
+            <label className="toggle-switch__label">
                 Короткометражки
             </label>
             <input
                 type="checkbox"
-                class="toggle-switch__checkbox"
+                className="toggle-switch__checkbox"
                 name="toggleSwitch"
                 id="toggleSwitch"
             />

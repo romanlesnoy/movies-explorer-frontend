@@ -15,32 +15,55 @@ function App() {
     const [currentUser, setCurrentUser] = useState({});
 
     const [loggedIn, setLoggedIn] = useState(false);
+    const [apiError, setApiError] = useState(" ");
     const history = useHistory();
-    let location = useLocation()
+    let location = useLocation().pathname;
 
-    const handleRegister = ({name, email, password}) => {
+    const showApiErrorTimer = (error) => {
+        setApiError(error);
+        setTimeout(() => setApiError(''), 3000);
+    };
+
+    const tokenCheck = () => {
+        const token = localStorage.getItem("jwt");
+        if (token) {
+            getUser(token)
+                .then((res) => {
+                    if (res) {
+                        setLoggedIn(true);
+                        history.push(location);
+                    }
+                })
+                .catch((err) => {
+                    console.log(err);
+                    localStorage.removeItem('token');
+                    history.push('/');
+                });
+        }
+    };
+
+    const handleRegister = ({ name, email, password }) => {
         register(name, email, password)
             .then((res) => {
                 if (res) {
-                    handleLogin(email, password)
+                    handleLogin(email, password);
                 }
             })
             .catch((err) => {
+                setApiError(err.message);
                 if (err === "Error 400") {
-                    return console.log("Не верно заполнено одно из поле");
+                    return showApiErrorTimer("Не верно заполнено одно из поле");
                 }
                 if (err === "Error 409") {
-                    return console.log("Такой пользователь уже существует");
+                    return showApiErrorTimer("Такой пользователь уже существует");
                 }
                 console.log(err);
             });
     };
 
     const handleLogin = (email, password) => {
-        console.log(email, password);
         login(email, password)
             .then((res) => {
-                console.log(res.token)
                 if (res.token) {
                     localStorage.setItem("jwt", res.token);
                     setLoggedIn(true);
@@ -49,37 +72,24 @@ function App() {
             })
             .catch((err) => {
                 if (err === "Error 400") {
-                    return console.log("Не верно заполнено одно из поле");
+                    return showApiErrorTimer("Не верно заполнено одно из поле");
                 }
                 if (err === "Error 401") {
-                    return console.log("Неправильные почта или пароль");
+                    return showApiErrorTimer("Неправильные почта или пароль");
                 }
                 console.log(err);
             });
     };
-
-    useEffect(() => {
-        const path = location.pathname;
-        const jwt = localStorage.getItem("jwt");
-        if (jwt) {
-            getUser(jwt)
-                .then((res) => {
-                    if (res) {
-                        setLoggedIn(true);
-                        history.push(path);
-                    }
-                })
-                .catch((err) => {
-                    console.log(err)
-                });
-        }
-    }, []);
 
     const handleLogOut = () => {
         localStorage.removeItem("jwt");
         setLoggedIn(false);
         history.push("/");
     };
+
+    useEffect(() => {
+        tokenCheck();
+    }, []);
 
     return (
         <>
@@ -90,15 +100,14 @@ function App() {
                     </Route>
 
                     <Route path="/sign-up">
-                        <Register onRegister={handleRegister} />
+                        <Register onRegister={handleRegister} apiError={apiError}/>
                     </Route>
 
                     <Route path="/sign-in">
-                        <Login onLogin={handleLogin}/>
+                        <Login onLogin={handleLogin} apiError={apiError}/>
                     </Route>
 
                     <ProtectedRoute
-                        exact
                         path="/profile"
                         loggedIn={loggedIn}
                         component={Profile}
@@ -106,30 +115,16 @@ function App() {
                     />
 
                     <ProtectedRoute
-                        exact
                         path="/movies"
                         loggedIn={loggedIn}
                         component={Movies}
                     />
 
                     <ProtectedRoute
-                        exact
                         path="/saved-movies"
                         loggedIn={loggedIn}
                         component={SavedMovies}
                     />
-
-                    {/* <Route path="/profile">
-                        <Profile loggedIn={true} />
-                    </Route> */}
-
-                    {/* <Route path="/movies">
-                        <Movies loggedIn={true} />
-                    </Route> */}
-
-                    {/* <Route path="/saved-movies">
-                        <SavedMovies loggedIn={true} />
-                    </Route> */}
 
                     <Route path="*">
                         <NotFound />
