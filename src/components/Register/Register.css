@@ -56,18 +56,34 @@
     line-height: 16px;
 }
 
+.register__input_invalid {
+    color: #EE3465;
+}
+
 .register__input-error {
+    max-width: 396px;
     height: 12px;
+    padding-bottom: 10px;
+
+    font-family: Inter;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 10px;
+    line-height: 12px;
+
+    color: #EE3465;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
 }
 
 .register__label:last-of-type {
     padding-bottom: 69px;
 }
 
-.register__button {
+.register__submit-button {
     width: 396px;
     height: 45px;
-    align-self: flex-end;
 
     color: #fff;
     border: none;
@@ -75,6 +91,10 @@
     border-radius: 3px;
 
     cursor: pointer;
+}
+
+.register__submit-button_disable {
+    background-color: #2F2F2F;
 }
 
 .register__button:hover {
