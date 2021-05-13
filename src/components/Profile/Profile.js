@@ -1,22 +1,41 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Header from "../Header/Header";
 import "./Profile.css";
 import useFormValidation from "../../hooks/useFormValidation";
 
-function Profile({ loggedIn, onLogOut }) {
+function Profile({ loggedIn, currentUser, apiResponseMessage, onEditProfile, onLogOut }) {
     const { values, errors, isValid, handleChange, resetForm } =
-        useFormValidation({ email: "test@test.ru", name: "test" });
+        useFormValidation({ email: currentUser.email, name: currentUser.name });
+
+    const [isValuesNotMatched, setisValuesNotMatched] = useState(false);
+
+    const checkValues = () => {
+        if (
+            currentUser.email === values.email &&
+            currentUser.name === values.name
+        ) {
+            setisValuesNotMatched(false);
+        } else {
+            setisValuesNotMatched(true);
+        }
+    };
+
+    useEffect(() => {
+        checkValues();
+    }, [handleChange]);
 
     function handleOnSubmit(evt) {
         evt.preventDefault();
-        console.log(values);
+        onEditProfile(values);
         resetForm();
     }
     return (
         <>
             <Header loggedIn={loggedIn} />
             <section className="profile">
-                <h2 className="profile__welcome">Привет, Виталий!</h2>
+                <h2 className="profile__welcome">
+                    Привет, {currentUser.name}!
+                </h2>
                 <form
                     className="profile__edit-form"
                     onSubmit={handleOnSubmit}
@@ -55,11 +74,14 @@ function Profile({ loggedIn, onLogOut }) {
                     <span className="profile__input-error">{errors.email}</span>
                 </form>
                 <div className="profile__buttons-container">
+                <span className="profile__input-error">{apiResponseMessage}</span>
                     <button
                         type="submit"
-                        className={`profile__button ${
-                            !isValid && "profile__button_disable"
-                        }`}
+                        className={
+                            isValid && isValuesNotMatched
+                                ? "profile__button"
+                                : "profile__button profile__button_disable"
+                        }
                         onClick={handleOnSubmit}
                     >
                         Редактировать

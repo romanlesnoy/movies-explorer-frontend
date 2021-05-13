@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import logo from "../../images/icons/logo.svg";
 import useFormValidation from "../../hooks/useFormValidation";
 
-function Register({ onRegister, apiError }) {
+function Register({ onRegister, apiResponseMessage }) {
     const { values, errors, isValid, handleChange, resetForm } =
         useFormValidation({});
 
@@ -78,7 +78,7 @@ function Register({ onRegister, apiError }) {
                         {errors.password}
                     </span>
                 </label>
-                <span className="register__input-error">{apiError}</span>
+                <span className="register__input-error">{apiResponseMessage}</span>
                 <button
                     type="submit"
                     className={`register__submit-button ${

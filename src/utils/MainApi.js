@@ -41,3 +41,17 @@ export const getUser = (token) => {
         },
     }).then(response);
 };
+
+export const updateUser = ({name, email}) => {
+    const token = localStorage.getItem("jwt");
+    console.log(token, name, email)
+    return fetch(`${BASE_URL}/users/me`, {
+        method: "PATCH",
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({"email": email, "name": name}),
+    }).then(response);
+};

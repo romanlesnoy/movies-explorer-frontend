@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import logo from "../../images/icons/logo.svg";
 import useFormValidation from "../../hooks/useFormValidation";
 
-function Login({ onLogin, apiError }) {
+function Login({ onLogin, apiResponseMessage }) {
     const { values, errors, isValid, handleChange, resetForm } =
         useFormValidation({});
 
@@ -56,7 +56,7 @@ function Login({ onLogin, apiError }) {
                         {errors.password}
                     </span>
                 </label>
-                <span className="login__input-error">{apiError}</span>
+                <span className="login__input-error">{apiResponseMessage}</span>
                 <button
                     type="submit"
                     className={`login__submit-button ${

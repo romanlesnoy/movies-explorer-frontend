@@ -23,6 +23,7 @@
 
 .profile__edit-form {
     width: 410px;
+    padding-bottom: 204px;
 
     display: flex;
     flex-direction: column;
@@ -73,12 +74,14 @@
 .profile__input-error {
     max-width: 410px;
     height: 12px;
+
     padding-bottom: 4px;
     font-family: Inter;
     font-style: normal;
     font-weight: normal;
     font-size: 10px;
     line-height: 12px;
+    text-align: center;
 
     color: #EE3465;
     text-overflow: ellipsis;
@@ -92,7 +95,6 @@
 }
 
 .profile__buttons-container {
-    padding-top: 204px;
     display: flex;
     flex-direction: column;
     row-gap: 16px;
@@ -128,9 +130,8 @@
     .profile {
         padding: 236px 0 269px;
     }
-
-    .profile__buttons-container {
-        padding-top: 210px;
+    .profile__edit-form{
+        padding-bottom: 210px;
     }
     .profile__welcome {
         padding-bottom: 96px;
@@ -146,8 +147,6 @@
     }
     .profile__edit-form{
         width: 260px;
-    }
-    .profile__buttons-container {
-        padding-top: 379px;
+        padding-bottom: 379px
     }
 }

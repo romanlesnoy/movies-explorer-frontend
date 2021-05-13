@@ -9,19 +9,19 @@ import Profile from "../Profile/Profile";
 import Login from "../Login/Login";
 import Register from "../Register/Register";
 import NotFound from "../NotFound/NotFound";
-import { register, login, getUser } from "../../utils/MainApi";
+import { register, login, getUser, updateUser } from "../../utils/MainApi";
 
 function App() {
     const [currentUser, setCurrentUser] = useState({});
 
     const [loggedIn, setLoggedIn] = useState(false);
-    const [apiError, setApiError] = useState(" ");
+    const [apiResponseMessage, setResponseMessage] = useState(" ");
     const history = useHistory();
     let location = useLocation().pathname;
 
-    const showApiErrorTimer = (error) => {
-        setApiError(error);
-        setTimeout(() => setApiError(''), 3000);
+    const showResponseMessageTimer = (error) => {
+        setResponseMessage(error);
+        setTimeout(() => setResponseMessage(''), 3000);
     };
 
     const tokenCheck = () => {
@@ -31,6 +31,7 @@ function App() {
                 .then((res) => {
                     if (res) {
                         setLoggedIn(true);
+                        setCurrentUser(res);
                         history.push(location);
                     }
                 })
@@ -50,12 +51,11 @@ function App() {
                 }
             })
             .catch((err) => {
-                setApiError(err.message);
                 if (err === "Error 400") {
-                    return showApiErrorTimer("Не верно заполнено одно из поле");
+                    return showResponseMessageTimer("Не верно заполнено одно из поле");
                 }
                 if (err === "Error 409") {
-                    return showApiErrorTimer("Такой пользователь уже существует");
+                    return showResponseMessageTimer("Такой пользователь уже существует");
                 }
                 console.log(err);
             });
@@ -72,14 +72,26 @@ function App() {
             })
             .catch((err) => {
                 if (err === "Error 400") {
-                    return showApiErrorTimer("Не верно заполнено одно из поле");
+                    return showResponseMessageTimer("Не верно заполнено одно из поле");
                 }
                 if (err === "Error 401") {
-                    return showApiErrorTimer("Неправильные почта или пароль");
+                    return showResponseMessageTimer("Неправильные почта или пароль");
                 }
                 console.log(err);
             });
     };
+
+    const handleUpdateUser = (userData) => {
+        updateUser(userData)
+            .then((data) => {
+                setCurrentUser(data);
+                showResponseMessageTimer("Данные упешно обновлены!")
+            })
+            .catch((err) => {
+                showResponseMessageTimer("Что-то пошло не так. Попробуйте позже.")
+                console.log(err);
+            });
+    }
 
     const handleLogOut = () => {
         localStorage.removeItem("jwt");
@@ -100,17 +112,20 @@ function App() {
                     </Route>
 
                     <Route path="/sign-up">
-                        <Register onRegister={handleRegister} apiError={apiError}/>
+                        <Register onRegister={handleRegister} apiResponseMessage={apiResponseMessage}/>
                     </Route>
 
                     <Route path="/sign-in">
-                        <Login onLogin={handleLogin} apiError={apiError}/>
+                        <Login onLogin={handleLogin} apiResponseMessage={apiResponseMessage}/>
                     </Route>
 
                     <ProtectedRoute
                         path="/profile"
                         loggedIn={loggedIn}
                         component={Profile}
+                        currentUser={currentUser}
+                        apiResponseMessage={apiResponseMessage}
+                        onEditProfile={handleUpdateUser}
                         onLogOut={handleLogOut}
                     />
 
