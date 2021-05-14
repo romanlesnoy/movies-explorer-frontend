@@ -10,18 +10,23 @@ import Login from "../Login/Login";
 import Register from "../Register/Register";
 import NotFound from "../NotFound/NotFound";
 import { register, login, getUser, updateUser } from "../../utils/MainApi";
+import { getMovies } from "../../utils/MoviesApi";
 
 function App() {
-    const [currentUser, setCurrentUser] = useState({});
+    const [currentUser, setCurrentUser] = useState({
+        name: "",
+        email: "",
+    });
 
     const [loggedIn, setLoggedIn] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
     const [apiResponseMessage, setResponseMessage] = useState(" ");
     const history = useHistory();
     let location = useLocation().pathname;
 
     const showResponseMessageTimer = (error) => {
         setResponseMessage(error);
-        setTimeout(() => setResponseMessage(''), 3000);
+        setTimeout(() => setResponseMessage(""), 3000);
     };
 
     const tokenCheck = () => {
@@ -37,8 +42,8 @@ function App() {
                 })
                 .catch((err) => {
                     console.log(err);
-                    localStorage.removeItem('token');
-                    history.push('/');
+                    localStorage.removeItem("token");
+                    history.push("/");
                 });
         }
     };
@@ -52,10 +57,14 @@ function App() {
             })
             .catch((err) => {
                 if (err === "Error 400") {
-                    return showResponseMessageTimer("Не верно заполнено одно из поле");
+                    return showResponseMessageTimer(
+                        "Не верно заполнено одно из поле"
+                    );
                 }
                 if (err === "Error 409") {
-                    return showResponseMessageTimer("Такой пользователь уже существует");
+                    return showResponseMessageTimer(
+                        "Такой пользователь уже существует"
+                    );
                 }
                 console.log(err);
             });
@@ -72,10 +81,14 @@ function App() {
             })
             .catch((err) => {
                 if (err === "Error 400") {
-                    return showResponseMessageTimer("Не верно заполнено одно из поле");
+                    return showResponseMessageTimer(
+                        "Не верно заполнено одно из поле"
+                    );
                 }
                 if (err === "Error 401") {
-                    return showResponseMessageTimer("Неправильные почта или пароль");
+                    return showResponseMessageTimer(
+                        "Неправильные почта или пароль"
+                    );
                 }
                 console.log(err);
             });
@@ -83,24 +96,103 @@ function App() {
 
     const handleUpdateUser = (userData) => {
         updateUser(userData)
-            .then((data) => {
-                setCurrentUser(data);
-                showResponseMessageTimer("Данные упешно обновлены!")
+            .then((res) => {
+                if (res) {
+                    setCurrentUser({
+                        ...currentUser,
+                        name: res.newName,
+                        email: res.newEmail,
+                    });
+                    showResponseMessageTimer("Данные упешно обновлены!");
+                }
             })
             .catch((err) => {
-                showResponseMessageTimer("Что-то пошло не так. Попробуйте позже.")
+                showResponseMessageTimer(
+                    "Что-то пошло не так. Попробуйте позже."
+                );
                 console.log(err);
             });
-    }
+    };
 
     const handleLogOut = () => {
         localStorage.removeItem("jwt");
+        localStorage.removeItem("BeatsMovies");
         setLoggedIn(false);
         history.push("/");
     };
 
     useEffect(() => {
         tokenCheck();
+    }, []);
+
+    //Movies
+
+    const [allMovies, setAllmovies] = useState([]);
+
+    function getBeatMovies() {
+        getMovies()
+            .then((data) => {
+                const initialArray = data.map((item) => {
+                    const imageURL = item.image ? item.image.url : "";
+                    const thumbnailURL = item.image.formats.thumbnail.url;
+                    return {
+                        // ...item,
+                        country: item.country,
+                        image: `https://api.nomoreparties.co${imageURL}`,
+                        trailer: item.trailerLink,
+                        director: item.director,
+                        duration: item.duration,
+                        year: item.year,
+                        description: item.description,
+                        image: `https://api.nomoreparties.co${imageURL}`,
+                        trailer: item.trailerLink,
+                        thumbnail: `https://api.nomoreparties.co${thumbnailURL}`,
+                        movieId: item.id,
+                        nameRU: item.nameRU,
+                        nameEN: item.nameEN,
+                    };
+                });
+                console.log(initialArray);
+                // const moviesArray = data.map((item) => {
+                //     const imageURL = item.image ? item.image.url : "";
+                //     const thumbnailURL = item.image.formats.thumbnail.url;
+                //     return {
+                //         country: item.country,
+                //         director: item.director,
+                //         duration: item.duration,
+                //         year: item.year,
+                //         description: item.description,
+                //         image: `https://api.nomoreparties.co${imageURL}`,
+                //         trailer: item.trailerLink,
+                //         thumbnail: `https://api.nomoreparties.co${thumbnailURL}`,
+                //         movieId: item.id,
+                //         nameRU: item.nameRU,
+                //         nameEN: item.nameEN
+                //     };
+                // });
+                // localStorage.setItem(
+                //     "BeatsMovies",
+                //     JSON.stringify(moviesArray)
+                // );
+                // setAllmovies(moviesArray);
+                // console.log(moviesArray);
+            })
+            .catch((err) => {
+                localStorage.removeItem("BeatsMovies");
+                showResponseMessageTimer(
+                    "Что-то пошло не так. Попробуйте позже."
+                );
+            });
+    }
+
+    useEffect(() => {
+        const initial = JSON.parse(localStorage.getItem("BeatsMovies"));
+        if (initial) {
+            setAllmovies(initial);
+            console.log(allMovies);
+        } else {
+            getBeatMovies();
+        }
     }, []);
 
     return (
@@ -112,18 +204,24 @@ function App() {
                     </Route>
 
                     <Route path="/sign-up">
-                        <Register onRegister={handleRegister} apiResponseMessage={apiResponseMessage}/>
+                        <Register
+                            onRegister={handleRegister}
+                            apiResponseMessage={apiResponseMessage}
+                        />
                     </Route>
 
                     <Route path="/sign-in">
-                        <Login onLogin={handleLogin} apiResponseMessage={apiResponseMessage}/>
+                        <Login
+                            onLogin={handleLogin}
+                            apiResponseMessage={apiResponseMessage}
+                        />
                     </Route>
 
                     <ProtectedRoute
                         path="/profile"
                         loggedIn={loggedIn}
                         component={Profile}
-                        currentUser={currentUser}
+                        userData={currentUser}
                         apiResponseMessage={apiResponseMessage}
                         onEditProfile={handleUpdateUser}
                         onLogOut={handleLogOut}
@@ -132,12 +230,14 @@ function App() {
                     <ProtectedRoute
                         path="/movies"
                         loggedIn={loggedIn}
+                        isLoading={isLoading}
                         component={Movies}
                     />
 
                     <ProtectedRoute
                         path="/saved-movies"
                         loggedIn={loggedIn}
+                        isLoading={isLoading}
                         component={SavedMovies}
                     />
 

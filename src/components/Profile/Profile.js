@@ -2,8 +2,10 @@ import React, { useEffect, useState } from "react";
 import Header from "../Header/Header";
 import "./Profile.css";
 import useFormValidation from "../../hooks/useFormValidation";
+import { CurrentUserContext } from "../../context/currentUserContext";
 
-function Profile({ loggedIn, currentUser, apiResponseMessage, onEditProfile, onLogOut }) {
+function Profile({ loggedIn, apiResponseMessage, userData, onEditProfile, onLogOut }) {
+    const currentUser = React.useContext(CurrentUserContext);
     const { values, errors, isValid, handleChange, resetForm } =
         useFormValidation({ email: currentUser.email, name: currentUser.name });
 
@@ -34,7 +36,7 @@ function Profile({ loggedIn, currentUser, apiResponseMessage, onEditProfile, onL
             <Header loggedIn={loggedIn} />
             <section className="profile">
                 <h2 className="profile__welcome">
-                    Привет, {currentUser.name}!
+                    Привет, {userData.name}!
                 </h2>
                 <form
                     className="profile__edit-form"
@@ -74,7 +76,9 @@ function Profile({ loggedIn, currentUser, apiResponseMessage, onEditProfile, onL
                     <span className="profile__input-error">{errors.email}</span>
                 </form>
                 <div className="profile__buttons-container">
-                <span className="profile__input-error">{apiResponseMessage}</span>
+                    <span className="profile__input-error">
+                        {apiResponseMessage}
+                    </span>
                     <button
                         type="submit"
                         className={
@@ -83,8 +87,11 @@ function Profile({ loggedIn, currentUser, apiResponseMessage, onEditProfile, onL
                                 : "profile__button profile__button_disable"
                         }
                         onClick={handleOnSubmit}
+                        disabled={!isValid && !isValuesNotMatched}
                     >
-                        Редактировать
+                        {isValid && isValuesNotMatched
+                            ? "Сохранить"
+                            : "Редактировать"}
                     </button>
                     <button
                         type="button"
