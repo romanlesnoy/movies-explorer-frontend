@@ -3,7 +3,7 @@ import "./MoviesCardList.css";
 import MoviesCards from "../MoviesCards/MoviesCards";
 import Preloader from "../Preloader/Preloader";
 
-function MoviesCardList(isLoading) {
+function MoviesCardList({isLoading}) {
     return (
         <section className="movies-card-list">
             {isLoading ? (

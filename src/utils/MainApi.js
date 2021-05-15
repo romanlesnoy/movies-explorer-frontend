@@ -44,7 +44,6 @@ export const getUser = (token) => {
 
 export const updateUser = ({name, email}) => {
     const token = localStorage.getItem("jwt");
-    console.log(token, name, email)
     return fetch(`${BASE_URL}/users/me`, {
         method: "PATCH",
         headers: {

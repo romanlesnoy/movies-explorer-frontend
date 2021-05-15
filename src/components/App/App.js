@@ -11,6 +11,17 @@ import Register from "../Register/Register";
 import NotFound from "../NotFound/NotFound";
 import { register, login, getUser, updateUser } from "../../utils/MainApi";
 import { getMovies } from "../../utils/MoviesApi";
+import {
+    CONFLICT_EMAIL_MESSAGE,
+    INVALID_DATA_MESSAGE,
+    AUTH_DATA_ERROR_MESSAGE,
+    SERVER_ERROR_MESSAGE,
+    MOVIES_SERVER_ERROR_MESSAGE,
+    MOVIES_NOT_FOUND_MESSAGE,
+    SUCCSESS_UPDATE_MESSAGE,
+    SUCCSESS_DELETE_MESSAGE,
+    SUCCSESS_CREATE_MESSAGE,
+} from "../../utils/responseMessages";
 
 function App() {
     const [currentUser, setCurrentUser] = useState({
@@ -58,12 +69,12 @@ function App() {
             .catch((err) => {
                 if (err === "Error 400") {
                     return showResponseMessageTimer(
-                        "Не верно заполнено одно из поле"
+                        INVALID_DATA_MESSAGE
                     );
                 }
                 if (err === "Error 409") {
                     return showResponseMessageTimer(
-                        "Такой пользователь уже существует"
+                        CONFLICT_EMAIL_MESSAGE
                     );
                 }
                 console.log(err);
@@ -82,12 +93,12 @@ function App() {
             .catch((err) => {
                 if (err === "Error 400") {
                     return showResponseMessageTimer(
-                        "Не верно заполнено одно из поле"
+                        INVALID_DATA_MESSAGE
                     );
                 }
                 if (err === "Error 401") {
                     return showResponseMessageTimer(
-                        "Неправильные почта или пароль"
+                        AUTH_DATA_ERROR_MESSAGE
                     );
                 }
                 console.log(err);
@@ -103,12 +114,12 @@ function App() {
                         name: res.newName,
                         email: res.newEmail,
                     });
-                    showResponseMessageTimer("Данные упешно обновлены!");
+                    showResponseMessageTimer(SUCCSESS_UPDATE_MESSAGE);
                 }
             })
             .catch((err) => {
                 showResponseMessageTimer(
-                    "Что-то пошло не так. Попробуйте позже."
+                    SERVER_ERROR_MESSAGE
                 );
                 console.log(err);
             });
@@ -117,6 +128,7 @@ function App() {
     const handleLogOut = () => {
         localStorage.removeItem("jwt");
         localStorage.removeItem("BeatsMovies");
+        localStorage.removeItem("keyword");
         setLoggedIn(false);
         history.push("/");
     };
@@ -128,18 +140,18 @@ function App() {
     //Movies
 
     const [allMovies, setAllmovies] = useState([]);
+    const [moviesBadResponse, setMoviesBadResponse] = useState("");
 
     function getBeatMovies() {
         getMovies()
             .then((data) => {
-                const initialArray = data.map((item) => {
+                const moviesArray = data.map((item) => {
                     const imageURL = item.image ? item.image.url : "";
-                    const thumbnailURL = item.image.formats.thumbnail.url;
+                    const thumbnailURL = item.image
+                        ? item.image.formats.thumbnail.url
+                        : "";
                     return {
-                        // ...item,
                         country: item.country,
-                        image: `https://api.nomoreparties.co${imageURL}`,
-                        trailer: item.trailerLink,
                         director: item.director,
                         duration: item.duration,
                         year: item.year,
@@ -152,44 +164,27 @@ function App() {
                         nameEN: item.nameEN,
                     };
                 });
-                console.log(initialArray);
-                // const moviesArray = data.map((item) => {
-                //     const imageURL = item.image ? item.image.url : "";
-                //     const thumbnailURL = item.image.formats.thumbnail.url;
-                //     return {
-                //         country: item.country,
-                //         director: item.director,
-                //         duration: item.duration,
-                //         year: item.year,
-                //         description: item.description,
-                //         image: `https://api.nomoreparties.co${imageURL}`,
-                //         trailer: item.trailerLink,
-                //         thumbnail: `https://api.nomoreparties.co${thumbnailURL}`,
-                //         movieId: item.id,
-                //         nameRU: item.nameRU,
-                //         nameEN: item.nameEN
-                //     };
-                // });
-                // localStorage.setItem(
-                //     "BeatsMovies",
-                //     JSON.stringify(moviesArray)
-                // );
-                // setAllmovies(moviesArray);
-                // console.log(moviesArray);
+                localStorage.setItem("movies", JSON.stringify(moviesArray));
+                setAllmovies(moviesArray);
             })
             .catch((err) => {
                 localStorage.removeItem("BeatsMovies");
-                showResponseMessageTimer(
-                    "Что-то пошло не так. Попробуйте позже."
+                setMoviesBadResponse(
+                    MOVIES_SERVER_ERROR_MESSAGE
                 );
+                console.log(err);
             });
     }
 
+    function moviesSearch (keyword, checked) {
+        console.log(keyword);
+        console.log(checked);
+    }
+
     useEffect(() => {
-        const initial = JSON.parse(localStorage.getItem("BeatsMovies"));
-        if (initial) {
-            setAllmovies(initial);
-            console.log(allMovies);
+        const BeatsMovies = JSON.parse(localStorage.getItem("BeatsMovies"));
+        if (BeatsMovies) {
+            setAllmovies(BeatsMovies);
         } else {
             getBeatMovies();
         }
@@ -231,7 +226,9 @@ function App() {
                         path="/movies"
                         loggedIn={loggedIn}
                         isLoading={isLoading}
+                        moviesSearch={moviesSearch}
                         component={Movies}
+
                     />
 
                     <ProtectedRoute
