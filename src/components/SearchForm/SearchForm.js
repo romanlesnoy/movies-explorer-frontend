@@ -3,7 +3,7 @@ import ToggleSwitch from "../ToggleSwitch/ToggleSwitch";
 import "./SearchForm.css";
 import useFormValidation from "../../hooks/useFormValidation";
 
-function SearchForm({ handleSearch }) {
+function SearchForm({ handleSearch, setPreloader }) {
     const { values, errors, isValid, handleChange, resetForm } =
         useFormValidation({});
 
@@ -24,6 +24,7 @@ function SearchForm({ handleSearch }) {
         handleSearch(keyword, isShortMovies);
         localStorage.setItem("keyword", keyword);
         resetForm();
+        // setPreloader(true);
     }
 
     return (

@@ -1,0 +1,10 @@
+.movies {
+    height: 50vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.movie__response {
+    text-align: center;
+}

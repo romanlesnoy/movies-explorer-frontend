@@ -19,8 +19,8 @@ import {
     MOVIES_SERVER_ERROR_MESSAGE,
     MOVIES_NOT_FOUND_MESSAGE,
     SUCCSESS_UPDATE_MESSAGE,
-    SUCCSESS_DELETE_MESSAGE,
-    SUCCSESS_CREATE_MESSAGE,
+    // SUCCSESS_DELETE_MESSAGE,
+    // SUCCSESS_CREATE_MESSAGE,
 } from "../../utils/responseMessages";
 
 function App() {
@@ -34,11 +34,6 @@ function App() {
     const [apiResponseMessage, setResponseMessage] = useState(" ");
     const history = useHistory();
     let location = useLocation().pathname;
-
-    const showResponseMessageTimer = (error) => {
-        setResponseMessage(error);
-        setTimeout(() => setResponseMessage(""), 3000);
-    };
 
     const tokenCheck = () => {
         const token = localStorage.getItem("jwt");
@@ -68,14 +63,13 @@ function App() {
             })
             .catch((err) => {
                 if (err === "Error 400") {
-                    return showResponseMessageTimer(
-                        INVALID_DATA_MESSAGE
-                    );
+                    return showResponseMessageTimer(INVALID_DATA_MESSAGE);
                 }
                 if (err === "Error 409") {
-                    return showResponseMessageTimer(
-                        CONFLICT_EMAIL_MESSAGE
-                    );
+                    return showResponseMessageTimer(CONFLICT_EMAIL_MESSAGE);
+                }
+                if (err === "Error 500") {
+                    return showResponseMessageTimer(SERVER_ERROR_MESSAGE);
                 }
                 console.log(err);
             });
@@ -92,14 +86,14 @@ function App() {
             })
             .catch((err) => {
                 if (err === "Error 400") {
-                    return showResponseMessageTimer(
-                        INVALID_DATA_MESSAGE
-                    );
+                    return showResponseMessageTimer(INVALID_DATA_MESSAGE);
                 }
                 if (err === "Error 401") {
-                    return showResponseMessageTimer(
-                        AUTH_DATA_ERROR_MESSAGE
-                    );
+                    return showResponseMessageTimer(AUTH_DATA_ERROR_MESSAGE);
+                }
+                if (err === "Error 500") {
+                    console.log(SERVER_ERROR_MESSAGE);
+                    return showResponseMessageTimer(SERVER_ERROR_MESSAGE);
                 }
                 console.log(err);
             });
@@ -118,20 +112,23 @@ function App() {
                 }
             })
             .catch((err) => {
-                showResponseMessageTimer(
-                    SERVER_ERROR_MESSAGE
-                );
+                showResponseMessageTimer(SERVER_ERROR_MESSAGE);
                 console.log(err);
             });
     };
 
     const handleLogOut = () => {
         localStorage.removeItem("jwt");
-        localStorage.removeItem("BeatsMovies");
+        localStorage.removeItem("movies");
         localStorage.removeItem("keyword");
         setLoggedIn(false);
         history.push("/");
     };
+
+    function showResponseMessageTimer(error) {
+        setResponseMessage(error);
+        setTimeout(() => setResponseMessage(""), 10000);
+    }
 
     useEffect(() => {
         tokenCheck();
@@ -140,16 +137,34 @@ function App() {
     //Movies
 
     const [allMovies, setAllmovies] = useState([]);
+    const [shortMovies, setShortMovies] = useState([]);
+    const [searchMoviesResult, setSearchMoviesResult] = useState([]);
     const [moviesBadResponse, setMoviesBadResponse] = useState("");
 
+    function sortShortMovies(movies) {
+        const shortMoviesArray = movies.filter(
+            (movie) => movie.duration <= 40
+        );
+        return shortMoviesArray
+    }
+
     function getBeatMovies() {
-        getMovies()
+        const beatMovies = localStorage.getItem("movies");
+        if(beatMovies) {
+            setAllmovies(JSON.parse(beatMovies));
+            setShortMovies(sortShortMovies(JSON.parse(beatMovies)))
+            setTimeout(() => setIsLoading(false), 1000);
+        } else {
+            getMovies()
             .then((data) => {
                 const moviesArray = data.map((item) => {
                     const imageURL = item.image ? item.image.url : "";
                     const thumbnailURL = item.image
                         ? item.image.formats.thumbnail.url
                         : "";
+                    const noAdaptedName = item.nameEN
+                        ? item.nameEN
+                        : item.nameRU;
                     return {
                         country: item.country,
                         director: item.director,
@@ -161,34 +176,50 @@ function App() {
                         thumbnail: `https://api.nomoreparties.co${thumbnailURL}`,
                         movieId: item.id,
                         nameRU: item.nameRU,
-                        nameEN: item.nameEN,
+                        nameEN: noAdaptedName,
                     };
                 });
                 localStorage.setItem("movies", JSON.stringify(moviesArray));
                 setAllmovies(moviesArray);
+                setShortMovies(sortShortMovies(moviesArray));
             })
             .catch((err) => {
-                localStorage.removeItem("BeatsMovies");
-                setMoviesBadResponse(
-                    MOVIES_SERVER_ERROR_MESSAGE
-                );
+                setMoviesBadResponse(MOVIES_SERVER_ERROR_MESSAGE);
                 console.log(err);
-            });
-    }
-
-    function moviesSearch (keyword, checked) {
-        console.log(keyword);
-        console.log(checked);
-    }
-
-    useEffect(() => {
-        const BeatsMovies = JSON.parse(localStorage.getItem("BeatsMovies"));
-        if (BeatsMovies) {
-            setAllmovies(BeatsMovies);
-        } else {
-            getBeatMovies();
+            })
+            .finally(()=> {
+                setIsLoading(false);
+            })
         }
-    }, []);
+    }
+
+    function search(data, keyword) {
+        const result = data.filter((movie) => {
+            return (
+                movie.nameRU.toLowerCase().includes(keyword.toLowerCase()) ||
+                movie.nameEN.toLowerCase().includes(keyword.toLowerCase()) ||
+                movie.description.toLowerCase().includes(keyword.toLowerCase())
+            );
+        });
+        console.log(result)
+        return result;
+    }
+
+    const submitSearch = (keyword, checked) => {
+        setIsLoading(true);
+        getBeatMovies();
+        if (checked) {
+            setSearchMoviesResult(search(shortMovies, keyword));
+            if (searchMoviesResult.length === 0) {
+                setMoviesBadResponse(MOVIES_NOT_FOUND_MESSAGE);
+            }
+        } else {
+            setSearchMoviesResult(search(allMovies, keyword));
+            if (searchMoviesResult.length === 0) {
+                setMoviesBadResponse(MOVIES_NOT_FOUND_MESSAGE);
+            }
+        }
+    };
 
     return (
         <>
@@ -224,18 +255,24 @@ function App() {
 
                     <ProtectedRoute
                         path="/movies"
+                        component={Movies}
                         loggedIn={loggedIn}
                         isLoading={isLoading}
-                        moviesSearch={moviesSearch}
-                        component={Movies}
-
+                        onSubmitSearch={submitSearch}
+                        setPreloader={setIsLoading}
+                        badResponse={moviesBadResponse}
+                        foundMovies={searchMoviesResult}
                     />
 
                     <ProtectedRoute
                         path="/saved-movies"
+                        component={SavedMovies}
                         loggedIn={loggedIn}
                         isLoading={isLoading}
-                        component={SavedMovies}
+                        onSubmitSearch={submitSearch}
+                        setPreloader={setIsLoading}
+                        searchResponse={moviesBadResponse}
+                        foundMovies={searchMoviesResult}
                     />
 
                     <Route path="*">
