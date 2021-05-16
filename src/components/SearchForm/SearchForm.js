@@ -24,7 +24,6 @@ function SearchForm({ handleSearch, setPreloader }) {
         handleSearch(keyword, isShortMovies);
         localStorage.setItem("keyword", keyword);
         resetForm();
-        // setPreloader(true);
     }
 
     return (

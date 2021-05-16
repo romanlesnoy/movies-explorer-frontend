@@ -1,5 +1,5 @@
 .movies {
-    height: 50vh;
+    min-height: calc(100vh - 470px);
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -7,4 +7,14 @@
 
 .movie__response {
     text-align: center;
+}
+
+@media screen and (max-width: 550px) {
+    .movies {
+        min-height: calc(100vh - 570px);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+    
 }

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "./Movies.css";
 import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
@@ -14,6 +14,7 @@ function Movies({
     setPreloader,
     badResponse,
 }) {
+
     return (
         <>
             <Header loggedIn={loggedIn} />
@@ -27,10 +28,8 @@ function Movies({
                 {badResponse ? foundMovies.length === 0 && (
                     <p className="movie__response">{badResponse}</p>
                 ) : <p className="movie__response">Нужно ввести ключевое слово</p>}
-                {!foundMovies.length === 0 && (<MoviesCardList
-                    isLoading={isLoading}
+                {foundMovies.length !== 0 && (<MoviesCardList
                     foundMovies={foundMovies}
-                    badResponse={badResponse}
                 />)}
                 </div>
             </main>

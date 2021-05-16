@@ -19,6 +19,7 @@ import {
     MOVIES_SERVER_ERROR_MESSAGE,
     MOVIES_NOT_FOUND_MESSAGE,
     SUCCSESS_UPDATE_MESSAGE,
+    IMAGE_NOT_FOUND,
     // SUCCSESS_DELETE_MESSAGE,
     // SUCCSESS_CREATE_MESSAGE,
 } from "../../utils/responseMessages";
@@ -121,6 +122,9 @@ function App() {
         localStorage.removeItem("jwt");
         localStorage.removeItem("movies");
         localStorage.removeItem("keyword");
+        setShortMovies([]);
+        setShortMovies([]);
+        setSearchMoviesResult([]);
         setLoggedIn(false);
         history.push("/");
     };
@@ -142,54 +146,54 @@ function App() {
     const [moviesBadResponse, setMoviesBadResponse] = useState("");
 
     function sortShortMovies(movies) {
-        const shortMoviesArray = movies.filter(
-            (movie) => movie.duration <= 40
-        );
-        return shortMoviesArray
+        const shortMoviesArray = movies.filter((movie) => movie.duration <= 40);
+        return shortMoviesArray;
     }
 
     function getBeatMovies() {
         const beatMovies = localStorage.getItem("movies");
-        if(beatMovies) {
+        if (beatMovies) {
             setAllmovies(JSON.parse(beatMovies));
-            setShortMovies(sortShortMovies(JSON.parse(beatMovies)))
+            setShortMovies(sortShortMovies(JSON.parse(beatMovies)));
             setTimeout(() => setIsLoading(false), 1000);
         } else {
             getMovies()
-            .then((data) => {
-                const moviesArray = data.map((item) => {
-                    const imageURL = item.image ? item.image.url : "";
-                    const thumbnailURL = item.image
-                        ? item.image.formats.thumbnail.url
-                        : "";
-                    const noAdaptedName = item.nameEN
-                        ? item.nameEN
-                        : item.nameRU;
-                    return {
-                        country: item.country,
-                        director: item.director,
-                        duration: item.duration,
-                        year: item.year,
-                        description: item.description,
-                        image: `https://api.nomoreparties.co${imageURL}`,
-                        trailer: item.trailerLink,
-                        thumbnail: `https://api.nomoreparties.co${thumbnailURL}`,
-                        movieId: item.id,
-                        nameRU: item.nameRU,
-                        nameEN: noAdaptedName,
-                    };
+                .then((data) => {
+                    const moviesArray = data.map((item) => {
+                        const imageURL = item.image
+                            ? `https://api.nomoreparties.co${item.image.url}`
+                            : IMAGE_NOT_FOUND;
+                        const thumbnailURL = item.image
+                            ? `https://api.nomoreparties.co${item.image.formats.thumbnail.url}`
+                            : "";
+                        const noAdaptedName = item.nameEN
+                            ? item.nameEN
+                            : item.nameRU;
+                        return {
+                            country: item.country,
+                            director: item.director,
+                            duration: item.duration,
+                            year: item.year,
+                            description: item.description,
+                            image: imageURL,
+                            trailer: item.trailerLink,
+                            thumbnail: thumbnailURL,
+                            movieId: item.id,
+                            nameRU: item.nameRU,
+                            nameEN: noAdaptedName,
+                        };
+                    });
+                    localStorage.setItem("movies", JSON.stringify(moviesArray));
+                    setAllmovies(moviesArray);
+                    setShortMovies(sortShortMovies(moviesArray));
+                })
+                .catch((err) => {
+                    setMoviesBadResponse(MOVIES_SERVER_ERROR_MESSAGE);
+                    console.log(err);
+                })
+                .finally(() => {
+                    setIsLoading(false);
                 });
-                localStorage.setItem("movies", JSON.stringify(moviesArray));
-                setAllmovies(moviesArray);
-                setShortMovies(sortShortMovies(moviesArray));
-            })
-            .catch((err) => {
-                setMoviesBadResponse(MOVIES_SERVER_ERROR_MESSAGE);
-                console.log(err);
-            })
-            .finally(()=> {
-                setIsLoading(false);
-            })
         }
     }
 
@@ -201,7 +205,6 @@ function App() {
                 movie.description.toLowerCase().includes(keyword.toLowerCase())
             );
         });
-        console.log(result)
         return result;
     }
 

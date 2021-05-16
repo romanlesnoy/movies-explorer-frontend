@@ -71,9 +71,10 @@
 }
 
 .search__input-error {
-    display: inline-block;
     max-width: 396px;
     height: 12px;
+    padding-left: 27px;
+    display: inline-block;
 
     font-family: Inter;
     font-style: normal;

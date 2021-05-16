@@ -1,13 +1,22 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import "./MoviesCards.css";
+import image from "../../images/image-not-found.png"
 
-function MoviesCards() {
-    const [isLiked, setIsLiked] = useState(false)
+function MoviesCards({movie}) {
+    const { nameEN, duration, image, trailer } = movie;
+
+    const durationConverter = (duration) => {
+        const hours = Math.floor(duration / 60);
+        const minutes = duration % 60;
+        return `${hours > 0 ? hours + 'ч ' : ''}${minutes}м`
+    }
+
+    const [isLiked, setIsLiked] = useState(false);
     const cardLikeButtonClassName = `movies-card__bookmark-button ${
         isLiked ? "movies-card__bookmark-button_active" : " "
     }`;
 
-    function handleBookmarkClick () {
+    function handleBookmarkClick() {
         setIsLiked(!isLiked);
     }
 
@@ -15,8 +24,8 @@ function MoviesCards() {
         <article className="movies-card">
             <div className="movies-card__container">
                 <div className="movie-card__info">
-                    <h3 className="movies-card__name">Shut Up and Play the Hits</h3>
-                    <p className="movies-card__duration">1ч 47м</p>
+                    <h3 className="movies-card__name">{nameEN}</h3>
+                    <p className="movies-card__duration">{durationConverter(duration)}</p>
                 </div>
                 <button
                     className={cardLikeButtonClassName}
@@ -25,11 +34,9 @@ function MoviesCards() {
                     onClick={handleBookmarkClick}
                 ></button>
             </div>
-            <img
-                className="movies-card__images"
-                src="https://upload.wikimedia.org/wikipedia/en/thumb/1/16/Shut_Up_and_Play_the_Hits.jpg/220px-Shut_Up_and_Play_the_Hits.jpg"
-                alt="Shut Up and Play the Hits preview"
-            />
+            <a href={trailer} target="_blank" rel="noopener noreferrer">
+                <img className="movies-card__images" src={image} alt={nameEN} />
+            </a>
         </article>
     );
 }

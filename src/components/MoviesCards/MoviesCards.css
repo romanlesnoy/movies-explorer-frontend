@@ -17,6 +17,7 @@
 }
 
 .movies-card__name {
+    max-width: 210px;
     margin: 0;
 
     font-family: Inter;
@@ -24,11 +25,15 @@
     font-weight: 500;
     font-size: 15px;
     line-height: 18px;
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
 }
 
 .movies-card__duration {
     margin: 0;
-    
+
     font-family: Inter;
     font-style: normal;
     font-weight: normal;
@@ -53,15 +58,15 @@
 }
 
 .movies-card__bookmark-button:hover {
-    opacity: .8;
+    opacity: 0.8;
 }
 
 .movies-card__bookmark-button_active {
-    background-color: #3DDC84;
+    background-color: #3ddc84;
     background-image: url("../../images/icons/bookmark-icon-active.svg");
 }
 
-.movies-card__bookmark-button_active:hover  {
+.movies-card__bookmark-button_active:hover {
     background-color: #313131;
     background-image: url("../../images/icons/bookmark-cross-icon.svg");
 }
