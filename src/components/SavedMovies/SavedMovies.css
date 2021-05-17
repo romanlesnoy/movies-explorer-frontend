@@ -1,0 +1,20 @@
+.saved-movies {
+    min-height: calc(100vh - 470px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.saved-movie__response {
+    text-align: center;
+}
+
+@media screen and (max-width: 550px) {
+    .saved-movies {
+        min-height: calc(100vh - 570px);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+    
+}

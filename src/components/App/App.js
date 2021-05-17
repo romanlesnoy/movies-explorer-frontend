@@ -144,11 +144,6 @@ function App() {
     const [searchMoviesResult, setSearchMoviesResult] = useState([]);
     const [moviesBadResponse, setMoviesBadResponse] = useState("");
 
-    function sortShortMovies(movies) {
-        const shortMoviesArray = movies.filter((movie) => movie.duration <= 40);
-        return shortMoviesArray;
-    }
-
     function getBeatMovies() {
         getMovies()
             .then((data) => {
@@ -196,6 +191,11 @@ function App() {
             );
         });
         return result;
+    }
+
+    function sortShortMovies(movies) {
+        const shortMoviesArray = movies.filter((movie) => movie.duration <= 40);
+        return shortMoviesArray;
     }
 
     const submitSearch = (keyword, checked) => {
@@ -275,7 +275,7 @@ function App() {
                         isLoading={isLoading}
                         onSubmitSearch={submitSearch}
                         setPreloader={setIsLoading}
-                        searchResponse={moviesBadResponse}
+                        badResponse={moviesBadResponse}
                         foundMovies={searchMoviesResult}
                     />
 
