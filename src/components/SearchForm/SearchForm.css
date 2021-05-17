@@ -90,8 +90,10 @@
 
 @media screen and (max-width: 768px) {
     .search {
-        max-width: calc(100% - 60px);
         padding: 60px 0 60px;
+    }
+    .search__container {
+        max-width: calc(100% - 60px);
     
         flex-direction: column;
     }
@@ -100,8 +102,8 @@
 @media screen and (max-width: 550px) {
     .search {
         max-width: calc(100% - 20px);
-        padding: 60px 0 50px;
-
+    }
+    .search__container {
         gap: 45px;
     }
     .search__button {

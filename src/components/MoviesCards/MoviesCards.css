@@ -74,7 +74,7 @@
 .movies-card__images {
     width: 360px;
     height: 203px;
-    object-fit: contain;
+    object-fit: cover;
 }
 
 @media screen and (max-width: 892px) {
@@ -84,7 +84,7 @@
     }
 }
 
-@media screen and (max-width: 550px) {
+@media screen and (max-width: 767px) {
     .movies-card__images {
         width: 300px;
         height: 168px;
