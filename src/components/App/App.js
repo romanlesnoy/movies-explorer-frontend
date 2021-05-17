@@ -9,7 +9,14 @@ import Profile from "../Profile/Profile";
 import Login from "../Login/Login";
 import Register from "../Register/Register";
 import NotFound from "../NotFound/NotFound";
-import { register, login, getUser, updateUser } from "../../utils/MainApi";
+import {
+    createProfile,
+    login,
+    getUser,
+    updateProfile,
+    createMovie,
+    deleteMovie,
+} from "../../utils/MainApi";
 import { getMovies } from "../../utils/MoviesApi";
 import {
     CONFLICT_EMAIL_MESSAGE,
@@ -29,7 +36,6 @@ function App() {
         name: "",
         email: "",
     });
-
     const [loggedIn, setLoggedIn] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [apiResponseMessage, setResponseMessage] = useState(" ");
@@ -56,7 +62,7 @@ function App() {
     };
 
     const handleRegister = ({ name, email, password }) => {
-        register(name, email, password)
+        createProfile(name, email, password)
             .then((res) => {
                 if (res) {
                     handleLogin(email, password);
@@ -101,7 +107,7 @@ function App() {
     };
 
     const handleUpdateUser = (userData) => {
-        updateUser(userData)
+        updateProfile(userData)
             .then((res) => {
                 if (res) {
                     setCurrentUser({
@@ -142,6 +148,7 @@ function App() {
     const [allMovies, setAllmovies] = useState([]);
     const [shortMovies, setShortMovies] = useState([]);
     const [searchMoviesResult, setSearchMoviesResult] = useState([]);
+    const [likedMovies, setLikedMovies] = useState([]);
     const [moviesBadResponse, setMoviesBadResponse] = useState("");
 
     function getBeatMovies() {
@@ -153,12 +160,13 @@ function App() {
                         : IMAGE_NOT_FOUND;
                     const thumbnailURL = item.image
                         ? `https://api.nomoreparties.co${item.image.formats.thumbnail.url}`
-                        : "";
+                        : IMAGE_NOT_FOUND;
                     const noAdaptedName = item.nameEN
                         ? item.nameEN
                         : item.nameRU;
+                    const countryValue = item.country ? item.country : "none";
                     return {
-                        country: item.country,
+                        country: countryValue,
                         director: item.director,
                         duration: item.duration,
                         year: item.year,
@@ -199,20 +207,52 @@ function App() {
     }
 
     const submitSearch = (keyword, checked) => {
-        setTimeout(() => setIsLoading(true), 1000);
-        setTimeout(() => setIsLoading(false), 2000);
+        setIsLoading(true);
+        setTimeout(() => setIsLoading(false), 1000);
         if (checked) {
+            setTimeout(() => setIsLoading(false), 2000);
             setSearchMoviesResult(search(shortMovies, keyword));
             if (searchMoviesResult.length === 0) {
                 setMoviesBadResponse(MOVIES_NOT_FOUND_MESSAGE);
             }
         } else {
-            console.log("поиск по фильмам", keyword);
             setSearchMoviesResult(search(allMovies, keyword));
             if (searchMoviesResult.length === 0) {
                 setMoviesBadResponse(MOVIES_NOT_FOUND_MESSAGE);
             }
         }
+    };
+
+    const addMovie = (movie) => {
+        createMovie(movie)
+            .then((res) => {
+                const newMovie = res.newMovie;
+                setLikedMovies([...likedMovies, newMovie]);
+                console.log(res.message);
+            })
+            .catch((err) => console.log(err));
+    };
+
+    const removeMovies = (movie) => {
+        const movieId = likedMovies.find((item) => item.id === movie.id)._id
+        console.log(movieId);
+        deleteMovie(movieId)
+            .then((res) => {
+                const deleteMovie = res.deleteMovie;
+                const newlikedMovies = likedMovies.filter(
+                    (item) => item.movieId !== deleteMovie.movieId
+                );
+                setLikedMovies(newlikedMovies);
+                console.log(res.message);
+            })
+            .catch((err) => console.log(err));
+    };
+
+    const checkBookmarkStatus = (movie) => likedMovies.some((likedMovie) => likedMovie.id === movie.id);
+
+    const toggleMovieLike = (movie, isLiked) => {
+        isLiked ? removeMovies(movie) : addMovie(movie);
+        console.log(isLiked, "click");
     };
 
     useEffect(() => {
@@ -266,6 +306,8 @@ function App() {
                         setPreloader={setIsLoading}
                         badResponse={moviesBadResponse}
                         foundMovies={searchMoviesResult}
+                        toggleMovieLike={toggleMovieLike}
+                        checkBookmarkStatus={checkBookmarkStatus}
                     />
 
                     <ProtectedRoute

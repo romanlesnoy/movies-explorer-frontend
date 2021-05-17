@@ -2,7 +2,7 @@ import React from "react";
 import "./MoviesCardList.css";
 import MoviesCards from "../MoviesCards/MoviesCards";
 
-function MoviesCardList({ foundMovies }) {
+function MoviesCardList({ foundMovies, toggleMovieLike, checkBookmarkStatus }) {
     const [extraPortion, setExtraPortion] = React.useState(3);
     const [currentCount, setCurrenCount] = React.useState(0);
     const [renderMovies, setRenderMovies] = React.useState([]);
@@ -55,7 +55,7 @@ function MoviesCardList({ foundMovies }) {
         <section className="movies-card-list">
             <div className="movies-card-list__elements">
                 {renderMovies.map((movie) => (
-                    <MoviesCards key={movie.movieId} movie={movie} />
+                    <MoviesCards key={movie.movieId} movie={movie} onLikeClick={toggleMovieLike} checkBookmarkStatus={checkBookmarkStatus}/>
                 ))}
             </div>
             {currentCount < foundMovies.length && <button

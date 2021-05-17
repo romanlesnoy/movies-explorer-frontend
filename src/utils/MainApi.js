@@ -5,9 +5,9 @@ const response = (res) => {
         return res.json();
     }
     return Promise.reject(`Error ${res.status}`);
-}
+};
 
-export const register = (name, email, password) => {
+export const createProfile = (name, email, password) => {
     return fetch(`${BASE_URL}/signup`, {
         method: "POST",
         headers: {
@@ -15,7 +15,9 @@ export const register = (name, email, password) => {
             "Content-Type": "application/json",
         },
         body: JSON.stringify({
-            email, password, name
+            email,
+            password,
+            name,
         }),
     }).then(response);
 };
@@ -27,7 +29,7 @@ export const login = (email, password) => {
             Accept: "application/json",
             "Content-Type": "application/json",
         },
-        body: JSON.stringify({"email": email, "password": password}),
+        body: JSON.stringify({ email: email, password: password }),
     }).then(response);
 };
 
@@ -42,7 +44,7 @@ export const getUser = (token) => {
     }).then(response);
 };
 
-export const updateUser = ({name, email}) => {
+export const updateProfile = ({ name, email }) => {
     const token = localStorage.getItem("jwt");
     return fetch(`${BASE_URL}/users/me`, {
         method: "PATCH",
@@ -51,6 +53,43 @@ export const updateUser = ({name, email}) => {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({"email": email, "name": name}),
+        body: JSON.stringify({ email: email, name: name }),
+    }).then(response);
+};
+
+export const createMovie = (data) => {
+    const token = localStorage.getItem("jwt");
+    return fetch(`${BASE_URL}/movies`, {
+        method: "POST",
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+            country: data.country,
+            director: data.director,
+            duration: data.duration,
+            year: data.year,
+            description: data.description,
+            image: data.image,
+            trailer: data.trailer,
+            thumbnail: data.thumbnail,
+            movieId: data.movieId,
+            nameRU: data.nameRU,
+            nameEN: data.nameEN,
+        }),
+    }).then(response);
+};
+
+export const deleteMovie = (movieId) => {
+    const token = localStorage.getItem("jwt");
+    return fetch(`${BASE_URL}/movies/${movieId}`, {
+        method: "DELETE",
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
     }).then(response);
 };

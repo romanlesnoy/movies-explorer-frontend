@@ -13,6 +13,8 @@ function Movies({
     foundMovies,
     setPreloader,
     badResponse,
+    toggleMovieLike,
+    checkBookmarkStatus,
 }) {
 
     return (
@@ -30,6 +32,8 @@ function Movies({
                 ) : <p className="movie__response">Нужно ввести ключевое слово</p>}
                 {foundMovies.length !== 0 && (<MoviesCardList
                     foundMovies={foundMovies}
+                    toggleMovieLike={toggleMovieLike}
+                    checkBookmarkStatus={checkBookmarkStatus}
                 />)}
                 </div>
             </main>

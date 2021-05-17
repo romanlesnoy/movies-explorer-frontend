@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./MoviesCards.css";
-import image from "../../images/image-not-found.png"
 
-function MoviesCards({movie}) {
+function MoviesCards({movie, onLikeClick, checkBookmarkStatus}) {
     const { nameEN, duration, image, trailer } = movie;
+
+    const [isLiked, setIsLiked] = useState(checkBookmarkStatus(movie));
 
     const durationConverter = (duration) => {
         const hours = Math.floor(duration / 60);
@@ -11,15 +12,19 @@ function MoviesCards({movie}) {
         return `${hours > 0 ? hours + 'ч ' : ''}${minutes}м`
     }
 
-    const [isLiked, setIsLiked] = useState(false);
     const cardLikeButtonClassName = `movies-card__bookmark-button ${
         isLiked ? "movies-card__bookmark-button_active" : " "
     }`;
 
     function handleBookmarkClick() {
         setIsLiked(!isLiked);
+        onLikeClick(movie, isLiked);
     }
 
+    useEffect(() => {
+        checkBookmarkStatus(movie);
+    }, []);
+    
     return (
         <article className="movies-card">
             <div className="movies-card__container">
