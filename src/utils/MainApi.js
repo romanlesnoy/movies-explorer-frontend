@@ -93,3 +93,15 @@ export const deleteMovie = (movieId) => {
         },
     }).then(response);
 };
+
+export const getUserMovies = () => {
+    const token = localStorage.getItem("jwt");
+    return fetch(`${BASE_URL}/movies`, {
+        method: "GET",
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+    }).then(response);
+};

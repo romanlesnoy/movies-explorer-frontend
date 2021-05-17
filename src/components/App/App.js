@@ -16,6 +16,7 @@ import {
     updateProfile,
     createMovie,
     deleteMovie,
+    getUserMovies,
 } from "../../utils/MainApi";
 import { getMovies } from "../../utils/MoviesApi";
 import {
@@ -27,8 +28,6 @@ import {
     MOVIES_NOT_FOUND_MESSAGE,
     SUCCSESS_UPDATE_MESSAGE,
     IMAGE_NOT_FOUND,
-    // SUCCSESS_DELETE_MESSAGE,
-    // SUCCSESS_CREATE_MESSAGE,
 } from "../../utils/responseMessages";
 
 function App() {
@@ -190,6 +189,16 @@ function App() {
             });
     }
 
+    function getFavoriteMovies() {
+        getUserMovies()
+            .then((favouriteMovies) => {
+                setLikedMovies(favouriteMovies);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }
+
     function search(data, keyword) {
         const result = data.filter((movie) => {
             return (
@@ -234,8 +243,7 @@ function App() {
     };
 
     const removeMovies = (movie) => {
-        const movieId = likedMovies.find((item) => item.id === movie.id)._id
-        console.log(movieId);
+        const movieId = likedMovies.find((item) => item.id === movie.id)._id;
         deleteMovie(movieId)
             .then((res) => {
                 const deleteMovie = res.deleteMovie;
@@ -248,7 +256,11 @@ function App() {
             .catch((err) => console.log(err));
     };
 
-    const checkBookmarkStatus = (movie) => likedMovies.some((likedMovie) => likedMovie.id === movie.id);
+    const checkBookmarkStatus = (movie) => {
+        console.log(movie, "id film")
+        console.log(likedMovies);
+        return likedMovies.some((likedMovie) => likedMovie.movieId === movie.movieId);
+    }
 
     const toggleMovieLike = (movie, isLiked) => {
         isLiked ? removeMovies(movie) : addMovie(movie);
@@ -263,6 +275,7 @@ function App() {
         } else {
             getBeatMovies();
         }
+        getFavoriteMovies();
     }, []);
 
     return (
@@ -319,6 +332,8 @@ function App() {
                         setPreloader={setIsLoading}
                         badResponse={moviesBadResponse}
                         foundMovies={searchMoviesResult}
+                        toggleMovieLike={toggleMovieLike}
+                        checkBookmarkStatus={checkBookmarkStatus}
                     />
 
                     <Route path="*">

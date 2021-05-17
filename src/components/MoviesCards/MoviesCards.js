@@ -4,7 +4,7 @@ import "./MoviesCards.css";
 function MoviesCards({movie, onLikeClick, checkBookmarkStatus}) {
     const { nameEN, duration, image, trailer } = movie;
 
-    const [isLiked, setIsLiked] = useState(checkBookmarkStatus(movie));
+    const isLiked = checkBookmarkStatus(movie);
 
     const durationConverter = (duration) => {
         const hours = Math.floor(duration / 60);
@@ -17,13 +17,8 @@ function MoviesCards({movie, onLikeClick, checkBookmarkStatus}) {
     }`;
 
     function handleBookmarkClick() {
-        setIsLiked(!isLiked);
         onLikeClick(movie, isLiked);
     }
-
-    useEffect(() => {
-        checkBookmarkStatus(movie);
-    }, []);
     
     return (
         <article className="movies-card">
