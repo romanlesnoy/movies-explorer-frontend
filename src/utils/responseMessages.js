@@ -7,5 +7,6 @@ export const SERVER_ERROR_MESSAGE = "Что-то пошло не так. Поп�
 export const MOVIES_SERVER_ERROR_MESSAGE =
     "Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз";
 export const MOVIES_NOT_FOUND_MESSAGE = "Ничего не найдено";
+export const SAVED_MOVIE_NOT_FOUND_MESSAGE = "Вы не сохраняли данный фильм"
 export const SUCCSESS_UPDATE_MESSAGE = "Данные упешно обновлены!";
 export const IMAGE_NOT_FOUND = "https://res.cloudinary.com/teepublic/image/private/s--OXUPFdsw--/t_Preview/b_rgb:191919,c_lpad,f_jpg,h_630,q_90,w_1200/v1606803184/production/designs/16724220_0.jpg"

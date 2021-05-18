@@ -4,14 +4,20 @@ import "./Profile.css";
 import useFormValidation from "../../hooks/useFormValidation";
 import { CurrentUserContext } from "../../context/currentUserContext";
 
-function Profile({ loggedIn, apiResponseMessage, userData, onEditProfile, onLogOut }) {
+function Profile({
+    loggedIn,
+    apiResponseMessage,
+    userData,
+    onEditProfile,
+    onLogOut,
+}) {
     const currentUser = React.useContext(CurrentUserContext);
     const { values, errors, isValid, handleChange, resetForm } =
         useFormValidation({ email: currentUser.email, name: currentUser.name });
 
     const [isValuesNotMatched, setisValuesNotMatched] = useState(false);
 
-    const checkValues = () => {
+    function checkValues() {
         if (
             currentUser.email === values.email &&
             currentUser.name === values.name
@@ -20,7 +26,7 @@ function Profile({ loggedIn, apiResponseMessage, userData, onEditProfile, onLogO
         } else {
             setisValuesNotMatched(true);
         }
-    };
+    }
 
     useEffect(() => {
         checkValues();
@@ -35,9 +41,7 @@ function Profile({ loggedIn, apiResponseMessage, userData, onEditProfile, onLogO
         <>
             <Header loggedIn={loggedIn} />
             <section className="profile">
-                <h2 className="profile__welcome">
-                    Привет, {userData.name}!
-                </h2>
+                <h2 className="profile__welcome">Привет, {userData.name}!</h2>
                 <form
                     className="profile__edit-form"
                     onSubmit={handleOnSubmit}

@@ -12,11 +12,10 @@ function Movies({
     onSubmitSearch,
     foundMovies,
     setPreloader,
-    badResponse,
+    moviesSearchResponse,
     toggleMovieLike,
     checkBookmarkStatus,
 }) {
-
     return (
         <>
             <Header loggedIn={loggedIn} />
@@ -26,15 +25,25 @@ function Movies({
                     setPreloader={setPreloader}
                 />
                 <div className="movies">
-                {isLoading && <Preloader />}
-                {badResponse ? foundMovies.length === 0 && (
-                    <p className="movie__response">{badResponse}</p>
-                ) : <p className="movie__response">Нужно ввести ключевое слово</p>}
-                {foundMovies.length !== 0 && (<MoviesCardList
-                    foundMovies={foundMovies}
-                    toggleMovieLike={toggleMovieLike}
-                    checkBookmarkStatus={checkBookmarkStatus}
-                />)}
+                    {isLoading && <Preloader />}
+                    {moviesSearchResponse ? (
+                        foundMovies.length === 0 && (
+                            <p className="movie__response">
+                                {moviesSearchResponse}
+                            </p>
+                        )
+                    ) : (
+                        <p className="movie__response">
+                            Нужно ввести ключевое слово
+                        </p>
+                    )}
+                    {foundMovies.length !== 0 && (
+                        <MoviesCardList
+                            foundMovies={foundMovies}
+                            toggleMovieLike={toggleMovieLike}
+                            checkBookmarkStatus={checkBookmarkStatus}
+                        />
+                    )}
                 </div>
             </main>
             <Footer />

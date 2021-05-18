@@ -24,12 +24,13 @@ function SearchForm({ handleSearch, setPreloader }) {
         handleSearch(keyword, isShortMovies);
         localStorage.setItem("keyword", keyword);
         resetForm();
+        setPreloader(true);
     }
 
     return (
         <section className="search">
             <div className="search__container">
-                <form className="search__form" onSubmit={handleSubmit} >
+                <form className="search__form" onSubmit={handleSubmit}>
                     <input
                         className="search__input"
                         name="keyword"
@@ -42,9 +43,12 @@ function SearchForm({ handleSearch, setPreloader }) {
                         value={values.keyword || ""}
                         onChange={handleKeyword}
                     />
-                    <button className={`search__button ${
-                        !isValid && "search__button_disable"
-                    }`} disabled={!isValid}/>
+                    <button
+                        className={`search__button ${
+                            !isValid && "search__button_disable"
+                        }`}
+                        disabled={!isValid}
+                    />
                 </form>
                 <ToggleSwitch onCheckboxToggle={onCheckboxToggle} />
             </div>

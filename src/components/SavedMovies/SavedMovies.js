@@ -12,32 +12,39 @@ function SavedMovies({
     onSubmitSearch,
     foundMovies,
     setPreloader,
-    badResponse,
+    moviesSearchResponse,
     toggleMovieLike,
     checkBookmarkStatus,
 }) {
     return (
         <>
-        <Header loggedIn={loggedIn} />
-        <main>
-            <SearchForm
-                handleSearch={onSubmitSearch}
-                setPreloader={setPreloader}
-            />
-            <div className="saved-movies">
-            {isLoading && <Preloader />}
-            {badResponse ? foundMovies.length === 0 && (
-                <p className="saved-movie__response">{badResponse}</p>
-            ) : <p className="saved-movie__response">Нужно ввести ключевое слово</p>}
-            {foundMovies.length !== 0 && (<MoviesCardList
-                foundMovies={foundMovies}
-                toggleMovieLike={toggleMovieLike}
-                checkBookmarkStatus={checkBookmarkStatus}
-            />)}
-            </div>
-        </main>
-        <Footer />
-    </>
+            <Header loggedIn={loggedIn} />
+            <main>
+                <SearchForm
+                    handleSearch={onSubmitSearch}
+                    setPreloader={setPreloader}
+                />
+                <div className="saved-movies">
+                    {isLoading && <Preloader />}
+                    {moviesSearchResponse ? foundMovies.length === 0 && (
+                        <p className="saved-movie__response">{moviesSearchResponse}</p>
+                    ) : foundMovies.length === 0 && (
+                        <p className="saved-movie__response">
+                            Нет сохраненных фильмов
+                        </p>
+                    )}
+
+                    {foundMovies.length !== 0 && (
+                        <MoviesCardList
+                            foundMovies={foundMovies}
+                            toggleMovieLike={toggleMovieLike}
+                            checkBookmarkStatus={checkBookmarkStatus}
+                        />
+                    )}
+                </div>
+            </main>
+            <Footer />
+        </>
     );
 }
 

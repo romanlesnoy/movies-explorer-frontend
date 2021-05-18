@@ -55,16 +55,23 @@ function MoviesCardList({ foundMovies, toggleMovieLike, checkBookmarkStatus }) {
         <section className="movies-card-list">
             <div className="movies-card-list__elements">
                 {renderMovies.map((movie) => (
-                    <MoviesCards key={movie.movieId} movie={movie} onLikeClick={toggleMovieLike} checkBookmarkStatus={checkBookmarkStatus}/>
+                    <MoviesCards
+                        key={movie.movieId}
+                        movie={movie}
+                        onLikeClick={toggleMovieLike}
+                        checkBookmarkStatus={checkBookmarkStatus}
+                    />
                 ))}
             </div>
-            {currentCount < foundMovies.length && <button
-                className="movies-card-list__more-button"
-                aria-label="Load more movies"
-                onClick={handleMoreCards}
-            >
-                Ещё
-            </button>}
+            {currentCount < foundMovies.length && (
+                <button
+                    className="movies-card-list__more-button"
+                    aria-label="Load more movies"
+                    onClick={handleMoreCards}
+                >
+                    Ещё
+                </button>
+            )}
         </section>
     );
 }

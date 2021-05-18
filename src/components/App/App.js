@@ -26,6 +26,7 @@ import {
     SERVER_ERROR_MESSAGE,
     MOVIES_SERVER_ERROR_MESSAGE,
     MOVIES_NOT_FOUND_MESSAGE,
+    SAVED_MOVIE_NOT_FOUND_MESSAGE,
     SUCCSESS_UPDATE_MESSAGE,
     IMAGE_NOT_FOUND,
 } from "../../utils/responseMessages";
@@ -38,10 +39,17 @@ function App() {
     const [loggedIn, setLoggedIn] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [apiResponseMessage, setResponseMessage] = useState(" ");
+    const [allMovies, setAllmovies] = useState([]);
+    const [shortMovies, setShortMovies] = useState([]);
+    const [searchMoviesResult, setSearchMoviesResult] = useState([]);
+    const [likedMovies, setLikedMovies] = useState([]);
+    const [moviesSearchResponse, setMoviesSearchResponse] = useState("");
+    const [savedMoviesSearchResponse, setSavedMoviesSearchResponse] =
+        useState("");
     const history = useHistory();
     let location = useLocation().pathname;
 
-    const tokenCheck = () => {
+    function tokenCheck() {
         const token = localStorage.getItem("jwt");
         if (token) {
             getUser(token)
@@ -58,9 +66,9 @@ function App() {
                     history.push("/");
                 });
         }
-    };
+    }
 
-    const handleRegister = ({ name, email, password }) => {
+    function handleRegister({ name, email, password }) {
         createProfile(name, email, password)
             .then((res) => {
                 if (res) {
@@ -79,9 +87,9 @@ function App() {
                 }
                 console.log(err);
             });
-    };
+    }
 
-    const handleLogin = (email, password) => {
+    function handleLogin(email, password) {
         login(email, password)
             .then((res) => {
                 if (res.token) {
@@ -103,9 +111,9 @@ function App() {
                 }
                 console.log(err);
             });
-    };
+    }
 
-    const handleUpdateUser = (userData) => {
+    function handleUpdateUser(userData) {
         updateProfile(userData)
             .then((res) => {
                 if (res) {
@@ -121,36 +129,27 @@ function App() {
                 showResponseMessageTimer(SERVER_ERROR_MESSAGE);
                 console.log(err);
             });
-    };
+    }
 
-    const handleLogOut = () => {
+    function handleLogOut() {
         localStorage.removeItem("jwt");
         localStorage.removeItem("movies");
+        setCurrentUser({ name: "", email: "" });
         setShortMovies([]);
         setShortMovies([]);
         setSearchMoviesResult([]);
+        setLikedMovies([]);
         setLoggedIn(false);
         history.push("/");
-    };
+    }
 
     function showResponseMessageTimer(error) {
         setResponseMessage(error);
         setTimeout(() => setResponseMessage(""), 10000);
     }
 
-    useEffect(() => {
-        tokenCheck();
-    }, []);
-
-    //Movies
-
-    const [allMovies, setAllmovies] = useState([]);
-    const [shortMovies, setShortMovies] = useState([]);
-    const [searchMoviesResult, setSearchMoviesResult] = useState([]);
-    const [likedMovies, setLikedMovies] = useState([]);
-    const [moviesBadResponse, setMoviesBadResponse] = useState("");
-
     function getBeatMovies() {
+        setIsLoading(true);
         getMovies()
             .then((data) => {
                 const moviesArray = data.map((item) => {
@@ -181,7 +180,7 @@ function App() {
                 localStorage.setItem("movies", JSON.stringify(moviesArray));
             })
             .catch((err) => {
-                setMoviesBadResponse(MOVIES_SERVER_ERROR_MESSAGE);
+                setMoviesSearchResponse(MOVIES_SERVER_ERROR_MESSAGE);
                 console.log(err);
             })
             .finally(() => {
@@ -190,12 +189,18 @@ function App() {
     }
 
     function getFavoriteMovies() {
+        setIsLoading(true);
         getUserMovies()
             .then((favouriteMovies) => {
+                console.log(favouriteMovies, "сохраненные фильмы с сервера");
                 setLikedMovies(favouriteMovies);
             })
             .catch((error) => {
+                setMoviesSearchResponse(MOVIES_SERVER_ERROR_MESSAGE);
                 console.log(error);
+            })
+            .finally(() => {
+                setIsLoading(false);
             });
     }
 
@@ -215,24 +220,37 @@ function App() {
         return shortMoviesArray;
     }
 
-    const submitSearch = (keyword, checked) => {
-        setIsLoading(true);
-        setTimeout(() => setIsLoading(false), 1000);
+    function submitSearch(keyword, checked) {
+        setTimeout(() => setIsLoading(false), 2000);
         if (checked) {
-            setTimeout(() => setIsLoading(false), 2000);
             setSearchMoviesResult(search(shortMovies, keyword));
             if (searchMoviesResult.length === 0) {
-                setMoviesBadResponse(MOVIES_NOT_FOUND_MESSAGE);
+                setMoviesSearchResponse(MOVIES_NOT_FOUND_MESSAGE);
             }
         } else {
             setSearchMoviesResult(search(allMovies, keyword));
             if (searchMoviesResult.length === 0) {
-                setMoviesBadResponse(MOVIES_NOT_FOUND_MESSAGE);
+                setMoviesSearchResponse(MOVIES_NOT_FOUND_MESSAGE);
             }
         }
-    };
+    }
 
-    const addMovie = (movie) => {
+    function submitFavoriteSearch(keyword, checked) {
+        setTimeout(() => setIsLoading(false), 2000);
+        if (checked) {
+            setLikedMovies(search(sortShortMovies(likedMovies), keyword));
+            if (likedMovies.length === 0) {
+                setSavedMoviesSearchResponse(SAVED_MOVIE_NOT_FOUND_MESSAGE);
+            }
+        } else {
+            setLikedMovies(search(likedMovies, keyword));
+            if (likedMovies.length === 0) {
+                setSavedMoviesSearchResponse(SAVED_MOVIE_NOT_FOUND_MESSAGE);
+            }
+        }
+    }
+
+    function addMovie(movie) {
         createMovie(movie)
             .then((res) => {
                 const newMovie = res.newMovie;
@@ -240,42 +258,54 @@ function App() {
                 console.log(res.message);
             })
             .catch((err) => console.log(err));
-    };
+    }
 
-    const removeMovies = (movie) => {
-        const movieId = likedMovies.find((item) => item.id === movie.id)._id;
+    function removeMovies(movie) {
+        const movieId = likedMovies.find(
+            (item) => item.movieId === movie.movieId
+        )._id;
         deleteMovie(movieId)
             .then((res) => {
-                const deleteMovie = res.deleteMovie;
-                const newlikedMovies = likedMovies.filter(
-                    (item) => item.movieId !== deleteMovie.movieId
-                );
-                setLikedMovies(newlikedMovies);
+                getFavoriteMovies();
                 console.log(res.message);
             })
             .catch((err) => console.log(err));
-    };
-
-    const checkBookmarkStatus = (movie) => {
-        console.log(movie, "id film")
-        console.log(likedMovies);
-        return likedMovies.some((likedMovie) => likedMovie.movieId === movie.movieId);
     }
 
-    const toggleMovieLike = (movie, isLiked) => {
+    function checkBookmarkStatus(movie) {
+        return likedMovies.some(
+            (likedMovie) => likedMovie.movieId === movie.movieId
+        );
+    }
+
+    function toggleMovieLike(movie, isLiked) {
         isLiked ? removeMovies(movie) : addMovie(movie);
-        console.log(isLiked, "click");
-    };
+    }
 
     useEffect(() => {
         const movies = JSON.parse(localStorage.getItem("movies"));
+        console.log(movies);
         if (movies) {
             setAllmovies(movies);
             setShortMovies(sortShortMovies(movies));
         } else {
             getBeatMovies();
         }
-        getFavoriteMovies();
+    }, [loggedIn]);
+
+    useEffect(() => {
+        const token = localStorage.getItem("jwt");
+        if (!token) {
+            return;
+        } else {
+            Promise.all([getUser(token), getFavoriteMovies()]).catch((err) => {
+                console.log(err);
+            });
+        }
+    }, [loggedIn]);
+
+    useEffect(() => {
+        tokenCheck();
     }, []);
 
     return (
@@ -317,7 +347,7 @@ function App() {
                         isLoading={isLoading}
                         onSubmitSearch={submitSearch}
                         setPreloader={setIsLoading}
-                        badResponse={moviesBadResponse}
+                        moviesSearchResponse={moviesSearchResponse}
                         foundMovies={searchMoviesResult}
                         toggleMovieLike={toggleMovieLike}
                         checkBookmarkStatus={checkBookmarkStatus}
@@ -328,10 +358,10 @@ function App() {
                         component={SavedMovies}
                         loggedIn={loggedIn}
                         isLoading={isLoading}
-                        onSubmitSearch={submitSearch}
+                        onSubmitSearch={submitFavoriteSearch}
                         setPreloader={setIsLoading}
-                        badResponse={moviesBadResponse}
-                        foundMovies={searchMoviesResult}
+                        moviesSearchResponse={savedMoviesSearchResponse}
+                        foundMovies={likedMovies}
                         toggleMovieLike={toggleMovieLike}
                         checkBookmarkStatus={checkBookmarkStatus}
                     />
