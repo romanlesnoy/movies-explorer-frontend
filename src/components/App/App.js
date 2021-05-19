@@ -40,12 +40,12 @@ function App() {
     const [isLoading, setIsLoading] = useState(false);
     const [apiResponseMessage, setResponseMessage] = useState(" ");
     const [allMovies, setAllmovies] = useState([]);
-    const [shortMovies, setShortMovies] = useState([]);
     const [searchMoviesResult, setSearchMoviesResult] = useState([]);
-    const [likedMovies, setLikedMovies] = useState([]);
+    const [savedMovies, setSavedMovies] = useState([]);
     const [moviesSearchResponse, setMoviesSearchResponse] = useState("");
     const [savedMoviesSearchResponse, setSavedMoviesSearchResponse] =
         useState("");
+    const [isChecked, setIsChecked] = useState(false);
     const history = useHistory();
     let location = useLocation().pathname;
 
@@ -135,10 +135,9 @@ function App() {
         localStorage.removeItem("jwt");
         localStorage.removeItem("movies");
         setCurrentUser({ name: "", email: "" });
-        setShortMovies([]);
-        setShortMovies([]);
+        setAllmovies([]);
         setSearchMoviesResult([]);
-        setLikedMovies([]);
+        setSavedMovies([]);
         setLoggedIn(false);
         history.push("/");
     }
@@ -189,18 +188,13 @@ function App() {
     }
 
     function getFavoriteMovies() {
-        setIsLoading(true);
         getUserMovies()
             .then((favouriteMovies) => {
-                console.log(favouriteMovies, "сохраненные фильмы с сервера");
-                setLikedMovies(favouriteMovies);
+                setSavedMovies(favouriteMovies);
             })
             .catch((error) => {
                 setMoviesSearchResponse(MOVIES_SERVER_ERROR_MESSAGE);
                 console.log(error);
-            })
-            .finally(() => {
-                setIsLoading(false);
             });
     }
 
@@ -212,6 +206,12 @@ function App() {
                 movie.description.toLowerCase().includes(keyword.toLowerCase())
             );
         });
+        if (result.length === 0 && location === "/movies") {
+            setMoviesSearchResponse(MOVIES_NOT_FOUND_MESSAGE);
+        }
+        if (result.length === 0 && location === "/saved-movies") {
+            setSavedMoviesSearchResponse(SAVED_MOVIE_NOT_FOUND_MESSAGE);
+        }
         return result;
     }
 
@@ -220,48 +220,29 @@ function App() {
         return shortMoviesArray;
     }
 
-    function submitSearch(keyword, checked) {
-        setTimeout(() => setIsLoading(false), 2000);
-        if (checked) {
-            setSearchMoviesResult(search(shortMovies, keyword));
-            if (searchMoviesResult.length === 0) {
-                setMoviesSearchResponse(MOVIES_NOT_FOUND_MESSAGE);
-            }
-        } else {
-            setSearchMoviesResult(search(allMovies, keyword));
-            if (searchMoviesResult.length === 0) {
-                setMoviesSearchResponse(MOVIES_NOT_FOUND_MESSAGE);
-            }
-        }
+    function submitSearch(keyword) {
+        getBeatMovies();
+        setTimeout(() => setIsLoading(false), 1000);
+        setSearchMoviesResult(search(allMovies, keyword));
     }
 
-    function submitFavoriteSearch(keyword, checked) {
+    function submitFavoriteSearch(keyword) {
         setTimeout(() => setIsLoading(false), 2000);
-        if (checked) {
-            setLikedMovies(search(sortShortMovies(likedMovies), keyword));
-            if (likedMovies.length === 0) {
-                setSavedMoviesSearchResponse(SAVED_MOVIE_NOT_FOUND_MESSAGE);
-            }
-        } else {
-            setLikedMovies(search(likedMovies, keyword));
-            if (likedMovies.length === 0) {
-                setSavedMoviesSearchResponse(SAVED_MOVIE_NOT_FOUND_MESSAGE);
-            }
-        }
+        setSavedMovies(search(savedMovies, keyword));
     }
 
     function addMovie(movie) {
         createMovie(movie)
             .then((res) => {
-                const newMovie = res.newMovie;
-                setLikedMovies([...likedMovies, newMovie]);
+                const newSavedMovie = res.newMovie;
+                setSavedMovies([...savedMovies, newSavedMovie]);
                 console.log(res.message);
             })
             .catch((err) => console.log(err));
     }
 
     function removeMovies(movie) {
-        const movieId = likedMovies.find(
+        const movieId = savedMovies.find(
             (item) => item.movieId === movie.movieId
         )._id;
         deleteMovie(movieId)
@@ -273,8 +254,8 @@ function App() {
     }
 
     function checkBookmarkStatus(movie) {
-        return likedMovies.some(
-            (likedMovie) => likedMovie.movieId === movie.movieId
+        return savedMovies.some(
+            (savedMovie) => savedMovie.movieId === movie.movieId
         );
     }
 
@@ -283,24 +264,30 @@ function App() {
     }
 
     useEffect(() => {
-        const movies = JSON.parse(localStorage.getItem("movies"));
-        console.log(movies);
-        if (movies) {
-            setAllmovies(movies);
-            setShortMovies(sortShortMovies(movies));
-        } else {
-            getBeatMovies();
-        }
-    }, [loggedIn]);
-
-    useEffect(() => {
         const token = localStorage.getItem("jwt");
         if (!token) {
             return;
         } else {
-            Promise.all([getUser(token), getFavoriteMovies()]).catch((err) => {
-                console.log(err);
-            });
+            Promise.all([getUser(token), getFavoriteMovies()])
+                .then(([userData, favoriteMovieData]) => {
+                    setCurrentUser({
+                        ...currentUser,
+                        name: userData.name,
+                        email: userData.email,
+                    });
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        }
+    }, [loggedIn]);
+
+    useEffect(() => {
+        const movies = JSON.parse(localStorage.getItem("movies"));
+        if (movies) {
+            setAllmovies(movies);
+        } else {
+            getBeatMovies();
         }
     }, [loggedIn]);
 
@@ -346,9 +333,12 @@ function App() {
                         loggedIn={loggedIn}
                         isLoading={isLoading}
                         onSubmitSearch={submitSearch}
+                        setIsChecked={setIsChecked}
+                        isChecked={isChecked}
+                        sortShortMovies={sortShortMovies}
                         setPreloader={setIsLoading}
                         moviesSearchResponse={moviesSearchResponse}
-                        foundMovies={searchMoviesResult}
+                        movies={searchMoviesResult}
                         toggleMovieLike={toggleMovieLike}
                         checkBookmarkStatus={checkBookmarkStatus}
                     />
@@ -359,9 +349,12 @@ function App() {
                         loggedIn={loggedIn}
                         isLoading={isLoading}
                         onSubmitSearch={submitFavoriteSearch}
+                        setIsChecked={setIsChecked}
+                        isChecked={isChecked}
+                        sortShortMovies={sortShortMovies}
                         setPreloader={setIsLoading}
                         moviesSearchResponse={savedMoviesSearchResponse}
-                        foundMovies={likedMovies}
+                        movies={savedMovies}
                         toggleMovieLike={toggleMovieLike}
                         checkBookmarkStatus={checkBookmarkStatus}
                     />

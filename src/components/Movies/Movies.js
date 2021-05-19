@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./Movies.css";
 import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
@@ -10,12 +10,23 @@ function Movies({
     loggedIn,
     isLoading,
     onSubmitSearch,
-    foundMovies,
+    movies,
     setPreloader,
     moviesSearchResponse,
     toggleMovieLike,
     checkBookmarkStatus,
+    setIsChecked,
+    isChecked,
+    sortShortMovies,
 }) {
+    const [shortMovies, setShortMovies] = useState([]);
+
+    useEffect(() => {
+        if (isChecked) {
+            setShortMovies(sortShortMovies(movies));
+        }
+    }, [isChecked]);
+
     return (
         <>
             <Header loggedIn={loggedIn} />
@@ -23,23 +34,34 @@ function Movies({
                 <SearchForm
                     handleSearch={onSubmitSearch}
                     setPreloader={setPreloader}
+                    setIsChecked={setIsChecked}
                 />
                 <div className="movies">
                     {isLoading && <Preloader />}
-                    {moviesSearchResponse ? (
-                        foundMovies.length === 0 && (
+
+                    {moviesSearchResponse
+                        ? movies.length === 0 && (
                             <p className="movie__response">
                                 {moviesSearchResponse}
                             </p>
                         )
-                    ) : (
-                        <p className="movie__response">
-                            Нужно ввести ключевое слово
-                        </p>
-                    )}
-                    {foundMovies.length !== 0 && (
+                        : movies.length === 0 && (
+                            <p className="movie__response">
+                                Нужно ввести ключевое слово
+                            </p>
+                        )}
+
+                    {isChecked &&
+                        movies.length !== 0 &&
+                        shortMovies.length === 0 && (
+                            <p className="movie__response">
+                                Среди фильмов нет короткометражек
+                            </p>
+                        )}
+
+                    {movies.length !== 0 && (
                         <MoviesCardList
-                            foundMovies={foundMovies}
+                            movies={isChecked ? shortMovies : movies}
                             toggleMovieLike={toggleMovieLike}
                             checkBookmarkStatus={checkBookmarkStatus}
                         />

@@ -1,7 +1,7 @@
 import React from "react";
 import "./MoviesCards.css";
 
-function MoviesCards({movie, onLikeClick, checkBookmarkStatus}) {
+function MoviesCards({ movie, onLikeClick, checkBookmarkStatus}) {
     const { nameEN, duration, image, trailer } = movie;
 
     const isLiked = checkBookmarkStatus(movie);
@@ -9,8 +9,8 @@ function MoviesCards({movie, onLikeClick, checkBookmarkStatus}) {
     const durationConverter = (duration) => {
         const hours = Math.floor(duration / 60);
         const minutes = duration % 60;
-        return `${hours > 0 ? hours + 'ч ' : ''}${minutes}м`
-    }
+        return `${hours > 0 ? hours + "ч " : ""}${minutes}м`;
+    };
 
     const cardLikeButtonClassName = `movies-card__bookmark-button ${
         isLiked ? "movies-card__bookmark-button_active" : " "
@@ -19,13 +19,15 @@ function MoviesCards({movie, onLikeClick, checkBookmarkStatus}) {
     function handleBookmarkClick() {
         onLikeClick(movie, isLiked);
     }
-    
+
     return (
         <article className="movies-card">
             <div className="movies-card__container">
                 <div className="movie-card__info">
                     <h3 className="movies-card__name">{nameEN}</h3>
-                    <p className="movies-card__duration">{durationConverter(duration)}</p>
+                    <p className="movies-card__duration">
+                        {durationConverter(duration)}
+                    </p>
                 </div>
                 <button
                     className={cardLikeButtonClassName}

@@ -3,7 +3,7 @@ import ToggleSwitch from "../ToggleSwitch/ToggleSwitch";
 import "./SearchForm.css";
 import useFormValidation from "../../hooks/useFormValidation";
 
-function SearchForm({ handleSearch, setPreloader }) {
+function SearchForm({ handleSearch, setPreloader, setIsChecked }) {
     const { values, errors, isValid, handleChange, resetForm } =
         useFormValidation({});
 
@@ -12,6 +12,7 @@ function SearchForm({ handleSearch, setPreloader }) {
 
     function onCheckboxToggle(checked) {
         setIsShortMovies(checked);
+        setIsChecked(!isShortMovies);
     }
 
     function handleKeyword(evt) {
@@ -21,8 +22,7 @@ function SearchForm({ handleSearch, setPreloader }) {
 
     function handleSubmit(event) {
         event.preventDefault();
-        handleSearch(keyword, isShortMovies);
-        localStorage.setItem("keyword", keyword);
+        handleSearch(keyword);
         resetForm();
         setPreloader(true);
     }

@@ -71,6 +71,25 @@
     background-image: url("../../images/icons/bookmark-cross-icon.svg");
 }
 
+.movies-card__delete-button {
+    width: 30px;
+    height: 30px;
+    padding: 0;
+
+    border: none;
+    border-radius: 50px;
+
+    background-color: #313131;
+    background-image: url("../../images/icons/bookmark-cross-icon.svg");
+    background-repeat: no-repeat;
+    background-position: center;
+
+    cursor: pointer;
+}
+.movies-card__delete-button:hover {
+    opacity: 0.8;
+}
+
 .movies-card__images {
     width: 360px;
     height: 203px;

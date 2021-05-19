@@ -2,7 +2,12 @@ import React from "react";
 import "./MoviesCardList.css";
 import MoviesCards from "../MoviesCards/MoviesCards";
 
-function MoviesCardList({ foundMovies, toggleMovieLike, checkBookmarkStatus }) {
+function MoviesCardList({
+    movies,
+    toggleMovieLike,
+    checkBookmarkStatus,
+    isSavedPage,
+}) {
     const [extraPortion, setExtraPortion] = React.useState(3);
     const [currentCount, setCurrenCount] = React.useState(0);
     const [renderMovies, setRenderMovies] = React.useState([]);
@@ -18,8 +23,8 @@ function MoviesCardList({ foundMovies, toggleMovieLike, checkBookmarkStatus }) {
     }
 
     function renderExtraPortion() {
-        const count = Math.min(foundMovies.length, currentCount + extraPortion);
-        const extraMovies = foundMovies.slice(currentCount, count);
+        const count = Math.min(movies.length, currentCount + extraPortion);
+        const extraMovies = movies.slice(currentCount, count);
         setRenderMovies([...renderMovies, ...extraMovies]);
         setCurrenCount(count);
     }
@@ -42,10 +47,10 @@ function MoviesCardList({ foundMovies, toggleMovieLike, checkBookmarkStatus }) {
         const windowSize = window.innerWidth;
         const sizePortion = getCount(windowSize);
         setExtraPortion(sizePortion.extra);
-        const count = Math.min(foundMovies.length, sizePortion.first);
-        setRenderMovies(foundMovies.slice(0, count));
+        const count = Math.min(movies.length, sizePortion.first);
+        setRenderMovies(movies.slice(0, count));
         setCurrenCount(count);
-    }, [foundMovies]);
+    }, [movies]);
 
     function handleMoreCards() {
         renderExtraPortion();
@@ -54,16 +59,28 @@ function MoviesCardList({ foundMovies, toggleMovieLike, checkBookmarkStatus }) {
     return (
         <section className="movies-card-list">
             <div className="movies-card-list__elements">
-                {renderMovies.map((movie) => (
-                    <MoviesCards
-                        key={movie.movieId}
-                        movie={movie}
-                        onLikeClick={toggleMovieLike}
-                        checkBookmarkStatus={checkBookmarkStatus}
-                    />
-                ))}
+                {isSavedPage &&
+                    movies.map((movie) => (
+                        <MoviesCards
+                            key={movie.movieId}
+                            movie={movie}
+                            onLikeClick={toggleMovieLike}
+                            checkBookmarkStatus={checkBookmarkStatus}
+                        />
+                    ))}
+
+                {!isSavedPage &&
+                    renderMovies.map((movie) => (
+                        <MoviesCards
+                            key={movie.movieId}
+                            movie={movie}
+                            onLikeClick={toggleMovieLike}
+                            checkBookmarkStatus={checkBookmarkStatus}
+                        />
+                    ))}
             </div>
-            {currentCount < foundMovies.length && (
+
+            {!isSavedPage && currentCount < movies.length && (
                 <button
                     className="movies-card-list__more-button"
                     aria-label="Load more movies"
