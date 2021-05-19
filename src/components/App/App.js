@@ -137,6 +137,7 @@ function App() {
         setCurrentUser({ name: "", email: "" });
         setAllmovies([]);
         setSearchMoviesResult([]);
+        setMoviesSearchResponse([]);
         setSavedMovies([]);
         setLoggedIn(false);
         history.push("/");
