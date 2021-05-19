@@ -45,7 +45,6 @@ function App() {
     const [moviesSearchResponse, setMoviesSearchResponse] = useState("");
     const [savedMoviesSearchResponse, setSavedMoviesSearchResponse] =
         useState("");
-    const [isChecked, setIsChecked] = useState(false);
     const history = useHistory();
     let location = useLocation().pathname;
 
@@ -334,8 +333,6 @@ function App() {
                         loggedIn={loggedIn}
                         isLoading={isLoading}
                         onSubmitSearch={submitSearch}
-                        setIsChecked={setIsChecked}
-                        isChecked={isChecked}
                         sortShortMovies={sortShortMovies}
                         setPreloader={setIsLoading}
                         moviesSearchResponse={moviesSearchResponse}
@@ -350,8 +347,6 @@ function App() {
                         loggedIn={loggedIn}
                         isLoading={isLoading}
                         onSubmitSearch={submitFavoriteSearch}
-                        setIsChecked={setIsChecked}
-                        isChecked={isChecked}
                         sortShortMovies={sortShortMovies}
                         setPreloader={setIsLoading}
                         moviesSearchResponse={savedMoviesSearchResponse}

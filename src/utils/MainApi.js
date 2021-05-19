@@ -1,4 +1,5 @@
-export const BASE_URL = "https://api.movies-explorer.nomoredomains.icu";
+const BASE_URL = "https://api.movies-explorer.nomoredomains.icu";
+// const BASE_URL = "http://localhost:3001";
 
 const response = (res) => {
     if (res.ok) {

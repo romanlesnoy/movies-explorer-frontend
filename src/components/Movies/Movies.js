@@ -15,11 +15,10 @@ function Movies({
     moviesSearchResponse,
     toggleMovieLike,
     checkBookmarkStatus,
-    setIsChecked,
-    isChecked,
     sortShortMovies,
 }) {
     const [shortMovies, setShortMovies] = useState([]);
+    const [isChecked, setIsChecked] = useState(false);
 
     useEffect(() => {
         if (isChecked) {
