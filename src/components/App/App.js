@@ -133,6 +133,7 @@ function App() {
     function handleLogOut() {
         localStorage.removeItem("jwt");
         localStorage.removeItem("movies");
+        localStorage.removeItem("searchResult");
         setCurrentUser({ name: "", email: "" });
         setAllmovies([]);
         setSearchMoviesResult([]);
@@ -224,6 +225,7 @@ function App() {
         getBeatMovies();
         setTimeout(() => setIsLoading(false), 1000);
         setSearchMoviesResult(search(allMovies, keyword));
+        localStorage.setItem("searchResult", JSON.stringify(search(allMovies, keyword)))
     }
 
     function submitFavoriteSearch(keyword) {
@@ -286,6 +288,12 @@ function App() {
         const movies = JSON.parse(localStorage.getItem("movies"));
         if (movies) {
             setAllmovies(movies);
+            const searchResult = JSON.parse(localStorage.getItem("searchResult"));
+            console.log(searchResult, "результат поиска в локале")
+            if (searchResult) {
+                setSearchMoviesResult(searchResult);
+                console.log(searchResult, "результат поиска в стейт")
+            }
         } else {
             getBeatMovies();
         }
