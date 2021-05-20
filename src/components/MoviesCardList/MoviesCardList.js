@@ -1,6 +1,15 @@
 import React from "react";
 import "./MoviesCardList.css";
 import MoviesCards from "../MoviesCards/MoviesCards";
+import {
+    LARGE_SCREEN_RESOLUTION,
+    MEDIUM_SCREEN_RESOLUTION,
+    MAX_NUMBER_MOVIES,
+    MID_NUMBER_MOVIES,
+    MIN_NUMBER_MOVIES,
+    ADD_MAX_NUMBER_MOVIES,
+    ADD_MIN_NUMBER_MOVIES,
+} from "../../utils/constants";
 
 function MoviesCardList({
     movies,
@@ -13,12 +22,15 @@ function MoviesCardList({
     const [renderMovies, setRenderMovies] = React.useState([]);
 
     function getCount(windowSize) {
-        if (windowSize > 768) {
-            return { first: 12, extra: 3 };
-        } else if (windowSize > 660 && windowSize <= 768) {
-            return { first: 8, extra: 2 };
+        if (windowSize > LARGE_SCREEN_RESOLUTION) {
+            return { first: MAX_NUMBER_MOVIES, extra: ADD_MAX_NUMBER_MOVIES };
+        } else if (
+            windowSize > MEDIUM_SCREEN_RESOLUTION &&
+            windowSize <= LARGE_SCREEN_RESOLUTION
+        ) {
+            return { first: MID_NUMBER_MOVIES, extra: ADD_MIN_NUMBER_MOVIES };
         } else {
-            return { first: 5, extra: 2 };
+            return { first: MIN_NUMBER_MOVIES, extra: ADD_MIN_NUMBER_MOVIES };
         }
     }
 

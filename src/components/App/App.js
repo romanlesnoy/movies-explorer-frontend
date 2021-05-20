@@ -9,6 +9,7 @@ import Profile from "../Profile/Profile";
 import Login from "../Login/Login";
 import Register from "../Register/Register";
 import NotFound from "../NotFound/NotFound";
+import { getMovies } from "../../utils/MoviesApi";
 import {
     createProfile,
     login,
@@ -18,7 +19,6 @@ import {
     deleteMovie,
     getUserMovies,
 } from "../../utils/MainApi";
-import { getMovies } from "../../utils/MoviesApi";
 import {
     CONFLICT_EMAIL_MESSAGE,
     INVALID_DATA_MESSAGE,
@@ -30,6 +30,7 @@ import {
     SUCCSESS_UPDATE_MESSAGE,
     IMAGE_NOT_FOUND,
 } from "../../utils/responseMessages";
+import { DURATION_FOR_SORTING_SHORT_FILM } from "../../utils/constants";
 
 function App() {
     const [currentUser, setCurrentUser] = useState({
@@ -217,7 +218,9 @@ function App() {
     }
 
     function sortShortMovies(movies) {
-        const shortMoviesArray = movies.filter((movie) => movie.duration <= 40);
+        const shortMoviesArray = movies.filter(
+            (movie) => movie.duration <= DURATION_FOR_SORTING_SHORT_FILM
+        );
         return shortMoviesArray;
     }
 
@@ -225,7 +228,10 @@ function App() {
         getBeatMovies();
         setTimeout(() => setIsLoading(false), 1000);
         setSearchMoviesResult(search(allMovies, keyword));
-        localStorage.setItem("searchResult", JSON.stringify(search(allMovies, keyword)))
+        localStorage.setItem(
+            "searchResult",
+            JSON.stringify(search(allMovies, keyword))
+        );
     }
 
     function submitFavoriteSearch(keyword) {
@@ -288,7 +294,9 @@ function App() {
         const movies = JSON.parse(localStorage.getItem("movies"));
         if (movies) {
             setAllmovies(movies);
-            const searchResult = JSON.parse(localStorage.getItem("searchResult"));
+            const searchResult = JSON.parse(
+                localStorage.getItem("searchResult")
+            );
             if (searchResult) {
                 setSearchMoviesResult(searchResult);
             }
