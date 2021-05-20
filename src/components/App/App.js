@@ -289,10 +289,8 @@ function App() {
         if (movies) {
             setAllmovies(movies);
             const searchResult = JSON.parse(localStorage.getItem("searchResult"));
-            console.log(searchResult, "результат поиска в локале")
             if (searchResult) {
                 setSearchMoviesResult(searchResult);
-                console.log(searchResult, "результат поиска в стейт")
             }
         } else {
             getBeatMovies();

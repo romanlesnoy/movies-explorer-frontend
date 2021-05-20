@@ -3,7 +3,7 @@ import ToggleSwitch from "../ToggleSwitch/ToggleSwitch";
 import "./SearchForm.css";
 import useFormValidation from "../../hooks/useFormValidation";
 
-function SearchForm({ handleSearch, setPreloader, setIsChecked }) {
+function SearchForm({ handleSearch, setPreloader, setIsChecked, isLoading }) {
     const { values, errors, isValid, handleChange, resetForm } =
         useFormValidation({});
 
@@ -23,10 +23,9 @@ function SearchForm({ handleSearch, setPreloader, setIsChecked }) {
     function handleSubmit(event) {
         event.preventDefault();
         handleSearch(keyword);
-        resetForm();
+        // resetForm();
         setPreloader(true);
     }
-
     return (
         <section className="search">
             <div className="search__container">
@@ -42,6 +41,7 @@ function SearchForm({ handleSearch, setPreloader, setIsChecked }) {
                         autoComplete="off"
                         value={values.keyword || ""}
                         onChange={handleKeyword}
+                        disabled={isLoading}
                     />
                     <button
                         className={`search__button ${

@@ -33,6 +33,7 @@ function SavedMovies({
                     handleSearch={onSubmitSearch}
                     setPreloader={setPreloader}
                     setIsChecked={setIsChecked}
+                    isLoading={isLoading}
                 />
                 <div className="saved-movies">
                     {isLoading && <Preloader />}

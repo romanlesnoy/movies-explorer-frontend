@@ -35,7 +35,7 @@ function Profile({
     function handleOnSubmit(evt) {
         evt.preventDefault();
         onEditProfile(values);
-        resetForm();
+        // resetForm();
     }
     return (
         <>

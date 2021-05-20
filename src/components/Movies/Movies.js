@@ -34,6 +34,7 @@ function Movies({
                     handleSearch={onSubmitSearch}
                     setPreloader={setPreloader}
                     setIsChecked={setIsChecked}
+                    isLoading={isLoading}
                 />
                 <div className="movies">
                     {isLoading && <Preloader />}
