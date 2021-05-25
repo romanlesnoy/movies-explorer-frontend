@@ -4,7 +4,7 @@ import "./SearchForm.css";
 import useFormValidation from "../../hooks/useFormValidation";
 
 function SearchForm({ handleSearch, setPreloader, setIsChecked, isLoading }) {
-    const { values, errors, isValid, handleChange, resetForm } =
+    const { values, errors, isValid, handleChange } =
         useFormValidation({});
 
     const [keyword, setKeyword] = useState("");
@@ -26,6 +26,7 @@ function SearchForm({ handleSearch, setPreloader, setIsChecked, isLoading }) {
         // resetForm();
         setPreloader(true);
     }
+
     return (
         <section className="search">
             <div className="search__container">

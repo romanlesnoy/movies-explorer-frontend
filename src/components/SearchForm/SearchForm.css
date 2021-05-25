@@ -49,13 +49,12 @@
 }
 
 .search__button {
-    width: 105px;
-    height: 36px;
+    width: 50px;
+    height: 46px;
     align-self: center;
     padding: 0;
 
     background: transparent url("../../images/icons/search-icon.svg") no-repeat center center;
-    background-size: 76px;
     border: none;
     border-radius: 50px;
     cursor: pointer;
@@ -67,7 +66,6 @@
 
 .search__button_disable {
     background: transparent url("../../images/icons/search-icon-disable.svg") no-repeat center center;
-    background-size: 76px;
 }
 
 .search__input-error {
@@ -105,8 +103,5 @@
     }
     .search__container {
         gap: 45px;
-    }
-    .search__button {
-        margin-right: 5px;
     }
 }
