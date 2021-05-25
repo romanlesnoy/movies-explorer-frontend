@@ -39,9 +39,11 @@
 }
 
 .about-me__photo {
-    width: fit-content;
-    height: fit-content;
+    width: 270px;
+    height: 327px;
     border-radius: 10px;
+    object-fit: contain;
+    object-position: center;
 }
 
 .about-me__name {
@@ -110,7 +112,6 @@
         max-width: calc(100% - 100px);
         padding: 90px 50px 90px;
     }
-
     .about-me__content {
         column-gap: 49px
     }
@@ -131,6 +132,10 @@
 
         font-size: 12px;
         line-height: 18px;
+    }
+    .about-me__photo {
+        width: 255px;
+        height: 307px;
     }
 }
 
@@ -163,5 +168,9 @@
 
         font-size: 11px;
         line-height: 16px;
+    }
+    .about-me__photo {
+        width: 292px;
+        height: 325px;
     }
 }
