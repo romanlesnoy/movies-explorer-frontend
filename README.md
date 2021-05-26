@@ -1,10 +1,12 @@
-# movies-explorer-frontend
+# Movies Explorer
+
+![Project Movies Explorer](https://user-images.githubusercontent.com/69040854/119688955-1fcba400-be51-11eb-92c2-89f5ed7b99f4.png)
 
 [Ссылка на сайт](https://movies-explorer.nomoredomains.icu)
 
 [Ссылка на поддомен с api](https://api.movies-explorer.nomoredomains.icu)
 
-Проект предтавляет собой сайт с поиском документальных фильмов показаных в рамках проекта Beat Film Festival. Количество фильмов ограниченно сотней
+Проект предтавляет собой сайт с поиском документальных фильмов показаных в рамках проекта Beat Film Festival.
 Сайт адаптивен, и поддерживается большинством устройств.
 Функционал:
  - регистрация и авторизация пользователей
